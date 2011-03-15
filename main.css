@@ -19,19 +19,17 @@ h2 {
 p {
     text-align:justify;
 }
+
 a {
     color:#fff;
+    padding:0 5px;
+    background:#0c5aa6;
     text-decoration:none;
+    color:#fff;
 }
 
 a:hover {
     background:#408ad2;
-}
-
-a, p span {
-    padding:0 5px;
-    background:#0c5aa6;
-    color:#fff;
 }
 
 #forkme {
@@ -72,14 +70,31 @@ a, p span {
     position:absolute;
 }
 
-pre {
+code {
+    display:block;
+    position:relative;
     margin-bottom:15px;
     padding:8px 0 8px 12px;
     line-height:18px;
     border:1px solid #ffe773;
     border-left:4px solid #ffd300;
+    background:#ffffdd;
+}
+
+code pre {
     font-family:Monaco, Consolas, "Lucida Console", monospace;
     font-size:12px;
+}
+
+code .hint {
+    position:absolute;
+    top:0;
+    right:0;
+    padding:2px 5px;
+    background:#ffd300;
+    font-family:Monaco, Consolas, "Lucida Console", monospace;
+    font-size:12px;
+    color:#fff;
 }
 
 .download {

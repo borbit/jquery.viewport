@@ -11,12 +11,14 @@
 <div id="page">
     <h1>jQuery.Viewport</h1>
 
-    <a href="#" id="forkme">Fork me on GitHub</a>
+    <a href="https://github.com/borbit/jquery.viewport" id="forkme">Fork me on GitHub</a>
     
     <p>
-        Very helpfull, simple and lightweight <a href="#">jQuery plugin</a> that makes an element as a
-        viewport for displaying elements with absolute position in it. Inspired by
-        working on <a href="#">HTML5 puzzle</a> game. You can see it <a href="#">in action</a> right there:
+        Very helpfull, simple and lightweight
+        <a href="https://github.com/borbit/jquery.viewport">jQuery plugin</a>
+        that makes an element as a viewport for displaying elements with absolute
+        position in it. Inspired by working on <a href="http://puzzle.borbit.org">HTML5 puzzle</a>
+        game. You can see it in action right there:
     </p>
     
     <div id="viewport">
@@ -24,26 +26,36 @@
     </div>
 
     <p>
-        There are two additional plugins are used in this example: <a href="#">jquery.draggable</a>
-        (for dragging) from the jQuery UI library and <a href="#">jquery.scraggable</a>
-        (for scrolling) written by <a href="#">me</a>.
+        There are two additional plugins are used in this example: 
+        <a href="http://jqueryui.com/demos/draggable/">jquery.draggable</a>
+        (for dragging) from the jQuery UI library and my another fancy-pancy plugin named
+        <a href="https://github.com/borbit/jquery.scraggable">jquery.scraggable</a>
+        (for scrolling).
     </p>
 
     <h2>Code example</h2>
 
+<code>
+<div class="hint">CSS</div>
 <pre>
 #element {
     height:600px;
     width:350px;
 }
 </pre>
+</code>
 
+<code>
+<div class="hint">HTML</div>
 <pre>
 &lt;div id="element"&gt;
     &lt;img src="http://borbit.org/img/dragme.gif" id="image" /&gt;
 &lt;/div&gt;
 </pre>
+</code>
 
+<code>
+<div class="hint">JS</div>
 <pre>
 $(function() {
     $('#element').viewport();
@@ -54,6 +66,7 @@ $(function() {
     content.scraggable({containment: 'parent'});
 });
 </pre>
+</code>
 
     <h2>Downloads v.0.1.0</h2>
     
