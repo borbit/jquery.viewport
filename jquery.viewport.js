@@ -7,7 +7,7 @@ $.fn.viewport = function(options) {
     var selector = this.selector;
     var methods = $.fn.viewport.methods;
 
-    if (typeof(options) == 'string' && $.isFunction(methods[options])) {
+    if (typeof(options) == 'string' && cache[selector] != null && $.isFunction(methods[options])) {
         return methods[options].apply(this, Array.prototype.slice.call(arguments, 1));
     } else {
         if (typeof(options) == 'object' && options.jquery != null) {
@@ -17,25 +17,20 @@ $.fn.viewport = function(options) {
         } else {
             options = $.extend({}, $.fn.viewport.defaults, options);
         }
-        
+
         cache[selector] = Viewport(element, options);
         cache[selector].adjust();
     }
-    
+
     return this;
 };
 
 $.fn.viewport.methods = {
     update: function() {
-        if (cache[this.selector] != null) {
-            cache[this.selector].adjust();
-        }
+        cache[this.selector].adjust();
         return this;
     },
     size: function(height, width) {
-        if (cache[this.selector] == null) {
-            return this;
-        }
         if (height == null || width == null) {
             return cache[this.selector].getContentSize();
         }
@@ -43,16 +38,10 @@ $.fn.viewport.methods = {
         return this;
     },
     content: function() {
-        if (cache[this.selector] != null) {
-            return cache[this.selector].getContentElement();
-        }
-        return this;
+        return cache[this.selector].content;
     },
     binder: function() {
-        if (cache[this.selector] != null) {
-            return cache[this.selector].getBinderElement();
-        }
-        return this;
+        return cache[this.selector].binder;
     }
 };
 
@@ -69,7 +58,7 @@ function Viewport(element, options) {
     binder.css('position', 'absolute');
     binder.css('overflow', 'hidden');
     binder.append(content);
-          
+
     element.css('position', 'relative');
     element.css('overflow', 'hidden');
     element.append(binder);
@@ -92,7 +81,7 @@ function Viewport(element, options) {
         height: content.height(),
         width: content.width()
     };
-    
+
     var centerHorizontal = true,
         centerVertical = true,
         heightDiff = 0,
@@ -109,80 +98,78 @@ function Viewport(element, options) {
         contentOffset.top = ui.position.top;
     });
 
-    return {
-        adjust: function() {
-            var viewportSize = {
-                height: element.height(),
-                width: element.width()
-            };
+    function adjust() {
+        var viewportSize = {
+            height: element.height(),
+            width: element.width()
+        };
 
-            var diff;
+        var diff;
 
-            if (viewportSize.height > contentSize.height) {
-                content.css('top', 0);
-                binder.height(contentSize.height);
-                binder.css('top', Math.floor(viewportSize.height / 2) -
-                                  Math.floor(contentSize.height / 2))
+        if (viewportSize.height > contentSize.height) {
+            content.css('top', 0);
+            binder.height(contentSize.height);
+            binder.css('top', Math.floor(viewportSize.height / 2) -
+                              Math.floor(contentSize.height / 2))
+        } else {
+            diff = contentSize.height - viewportSize.height;
+            binder.height(viewportSize.height + diff * 2);
+            binder.css('top', -diff);
+
+            if (centerVertical) {
+                contentOffset.top = Math.floor(diff / 2);
+                content.css('top', contentOffset.top);
             } else {
-                diff = contentSize.height - viewportSize.height;
-                binder.height(viewportSize.height + diff * 2);
-                binder.css('top', -diff);
-
-                if (centerVertical) {
-                    contentOffset.top = Math.floor(diff / 2);
-                    content.css('top', contentOffset.top);
-                } else {
-                    var newTop = contentOffset.top - -(diff - heightDiff);
-                    if(newTop >= 0) {
-                        content.css('top', newTop);
-                        contentOffset.top = newTop;
-                    }
+                var newTop = contentOffset.top - -(diff - heightDiff);
+                if(newTop >= 0) {
+                    content.css('top', newTop);
+                    contentOffset.top = newTop;
                 }
-                heightDiff = diff;
             }
-
-            if (viewportSize.width > contentSize.width) {
-                content.css('left', 0);
-                binder.width(contentSize.width);
-                binder.css('left', Math.floor(viewportSize.width / 2) -
-                                   Math.floor(contentSize.width / 2));
-            } else {
-                diff = contentSize.width - viewportSize.width;
-                binder.width(viewportSize.width + diff * 2);
-                binder.css('left', -diff);
-
-                if (centerHorizontal) {
-                    contentOffset.left = Math.floor(diff / 2);
-                    content.css('left', contentOffset.left);
-                } else {
-                    var newLeft = contentOffset.left - -(diff - widthDiff);
-                    if(newLeft >= 0) {
-                        content.css('left', newLeft);
-                        contentOffset.left = newLeft;
-                    }
-                }
-                widthDiff = diff;
-            }
-        },
-
-        setContentSize: function(height, width) {
-            contentSize.height = height;
-            contentSize.width = width;
-            content.height(height);
-            content.width(width);
-        },
-
-        getContentSize: function() {
-            return contentSize;
-        },
-
-        getContentElement: function() {
-            return content;
-        },
-
-        getBinderElement: function() {
-            return binder;
+            heightDiff = diff;
         }
+
+        if (viewportSize.width > contentSize.width) {
+            content.css('left', 0);
+            binder.width(contentSize.width);
+            binder.css('left', Math.floor(viewportSize.width / 2) -
+                               Math.floor(contentSize.width / 2));
+        } else {
+            diff = contentSize.width - viewportSize.width;
+            binder.width(viewportSize.width + diff * 2);
+            binder.css('left', -diff);
+
+            if (centerHorizontal) {
+                contentOffset.left = Math.floor(diff / 2);
+                content.css('left', contentOffset.left);
+            } else {
+                var newLeft = contentOffset.left - -(diff - widthDiff);
+                if(newLeft >= 0) {
+                    content.css('left', newLeft);
+                    contentOffset.left = newLeft;
+                }
+            }
+            widthDiff = diff;
+        }
+    }
+
+    function setContentSize(height, width) {
+        contentSize.height = height;
+        contentSize.width = width;
+        content.height(height);
+        content.width(width);
+    }
+
+    function getContentSize() {
+        return contentSize;
+    }
+
+    return {
+        adjust: adjust,
+        setContentSize: setContentSize,
+        getContentSize: getContentSize,
+        content: content,
+        binder: binder
     };
 }
 
