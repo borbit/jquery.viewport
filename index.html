@@ -3,8 +3,122 @@
 <head>
     <title>jQuery.Viewport</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <link rel="stylesheet" type="text/css" href="reset.css" />
+    <link rel="stylesheet" type="text/css" href="main.css" />
 </head>
 <body>
+<div id="page">
+    <h1>jQuery.Viewport</h1>
 
+    <a href="#" id="forkme">Fork me on GitHub</a>
+    
+    <p>
+        Very helpfull, simple and lightweight <a href="#">jQuery plugin</a> that makes an element as a
+        viewport for displaying elements with absolute position in it. Inspired by
+        working on <a href="#">HTML5 puzzle</a> game. You can see it <a href="#">in action</a> right there:
+    </p>
+    
+    <div id="viewport">
+        <img src="http://borbit.org/img/dragme.gif" id="image" width="800" height="800" />
+    </div>
+
+    <p>
+        There are two additional plugins are used in this example: <a href="#">jquery.draggable</a>
+        (for dragging) from the jQuery UI library and <a href="#">jquery.scraggable</a>
+        (for scrolling) written by <a href="#">me</a>.
+    </p>
+
+    <h2>Code example</h2>
+
+<pre>
+#element {
+    height:600px;
+    width:350px;
+}
+</pre>
+
+<pre>
+&lt;div id="element"&gt;
+    &lt;img src="http://borbit.org/img/dragme.gif" id="image" /&gt;
+&lt;/div&gt;
+</pre>
+
+<pre>
+$(function() {
+    $('#element').viewport();
+
+    var content = $('#element').viewport('content');
+
+    content.draggable({containment: 'parent'});
+    content.scraggable({containment: 'parent'});
+});
+</pre>
+
+    <h2>Downloads v.0.1.0</h2>
+    
+    <div class="download">
+        <a href="#">Compressed <i>(1.8 kb)</i></a>
+        <a href="#">Uncompressed <i>(4 kb)</i></a>
+        <i>(Right-click and use "Save as")</i>
+    </div>
+
+    <h2>Documentation</h2>
+
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+        non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </p>
+
+    <h2>Change log</h2>
+
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+        non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </p>
+
+    <h2>Credits</h2>
+
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+        non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </p>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://github.com/borbit/jquery.viewport/raw/master/jquery.viewport.js"></script>
+    <script type="text/javascript" src="https://github.com/borbit/jquery.scraggable/raw/master/jquery.scraggable.js"></script>
+
+    <script type="text/javascript">
+        $(function() {
+            var element = $('#viewport');
+
+            element.viewport({
+                content: $('#image')
+            });
+
+            var content = element.viewport('content');
+
+            content.draggable({
+                containment: 'parent'
+            });
+            content.scraggable({
+                containment: 'parent'
+            });
+        });
+    </script>
+</div>
 </body>
 </html>

@@ -1,0 +1,91 @@
+body {
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, FreeSerif, serif;
+    font-size: 16px;
+    line-height:24px;
+}
+
+h1, h2 {
+    margin-top:20px;
+    margin-bottom:20px;
+    text-align:left;
+    font-size:1.8em;
+}
+
+h2 {
+    margin-top:30px;
+    font-size:1.5em;
+}
+
+p {
+    text-align:justify;
+}
+a {
+    color:#fff;
+    text-decoration:none;
+}
+
+a:hover {
+    background:#408ad2;
+}
+
+a, p span {
+    padding:0 5px;
+    background:#0c5aa6;
+    color:#fff;
+}
+
+#forkme {
+    position:absolute;
+    display:block;
+    top:-5px;
+    right:0px;
+    padding-right:40px;
+    height:40px;
+    line-height:40px;
+    background:#fff url(http://borbit.org/img/githublogo.png) no-repeat top right;
+    color:#a60000;
+    font-family:Helvetica, Arial;
+    font-weight:bold;
+    font-size:14px;
+}
+
+#forkme:hover {
+    color:#dc3b33;
+}
+
+#page {
+    position:relative;
+    margin:0 auto 50px auto;
+    width:600px;
+}
+
+#viewport {
+    position:relative;
+    overflow:hidden;
+    margin:20px 0;
+    height:350px;
+    width:600px;
+    -webkit-box-shadow:0 0 100px #777;
+}
+
+#viewport img {
+    position:absolute;
+}
+
+pre {
+    margin-bottom:15px;
+    padding:8px 0 8px 12px;
+    line-height:18px;
+    border:1px solid #ffe773;
+    border-left:4px solid #ffd300;
+    font-family:Monaco, Consolas, "Lucida Console", monospace;
+    font-size:12px;
+}
+
+.download {
+    margin-bottom:10px;
+}
+
+.download a {
+    margin-right:10px;
+}
