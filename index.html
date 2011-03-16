@@ -35,7 +35,7 @@
 
     <h2>Code example</h2>
 
-<code>
+<div class="code">
 <div class="hint">CSS</div>
 <pre>
 #element {
@@ -43,18 +43,18 @@
     width:350px;
 }
 </pre>
-</code>
+</div>
 
-<code>
+<div class="code">
 <div class="hint">HTML</div>
 <pre>
 &lt;div id="element"&gt;
     &lt;img src="http://borbit.org/img/dragme.gif" id="image" /&gt;
 &lt;/div&gt;
 </pre>
-</code>
+</div>
 
-<code>
+<div class="code">
 <div class="hint">JS</div>
 <pre>
 $(function() {
@@ -66,7 +66,7 @@ $(function() {
     content.scraggable({containment: 'parent'});
 });
 </pre>
-</code>
+</div>
 
     <h2>Downloads v.0.1.0</h2>
     
@@ -78,35 +78,59 @@ $(function() {
 
     <h2>Documentation</h2>
 
-    <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-        non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    <h3>Options</h3>
+    
+    <code>{content: false}</code>
+    
+    <p style="margin:5px 0 10px 0;">
+        Reference or selector to the DOM element which will be shown as content in the viewport box.
+        Possible values: <code>HTMLElement</code>, <code>false</code>, <code>jQueryElement</code>,
+        <code>'.selector'</code>. In case if this option is not set or it is <code>false</code> all
+        children elements the viewport element contains will be taken as a content.
     </p>
+
+    <code style="margin-right:5px;">{contentClass: 'viewportContent'}</code> Content element's class name.<br/>
+
+    <code style="margin-right:5px;">{binderClass: 'viewportBinder'}</code> Binder element's class name.
+
+    <h3>Methods</h3>
+
+    <code>'update'</code>
+
+    <p style="margin:5px 0 10px 0;">
+        Updates binder's position and size and updates content position regarding
+        the viewport element's size. This method should be called if viewport element's
+        size is changed. Return value <code>jQueryElement</code>.
+    </p>
+    
+    <code>'size'</code>
+
+    <p style="margin:5px 0 10px 0;">
+        Sets or returns content element's size. It is useful when your content doesn't
+        have static width and height. Return value: if parameters are not set -
+        <code>{height: [number], width: [number]}</code>, else - <code>jQueryElement</code>.
+    </p>
+
+    <code style="margin-right:5px;">'content'</code> Returns a jQuery object with content's element.<br/>
+
+    <code style="margin-right:5px;">'binder'</code> Returns a jQuery object with binder's element.<br/>
 
     <h2>Change log</h2>
 
+    <h3>0.1.0</h3>
     <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-        non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        Initial release of jquery.viewport
     </p>
 
     <h2>Credits</h2>
 
     <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-        non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        <a href="https://developer.mozilla.org/en/JavaScript/Guide" title="Learn JavaScript JS" style="float:right;background:none;">
+            <img src='http://static.jsconf.us/promotejsh.gif' height='150' width='180' alt='JavaScript Array constructor'/>
+        </a>
+        Serge Borbit<br/>
+        <a href="mailto:serge.borbit@gmail.com">serge.borbit@gmail.com</a><br/>
+        <a href="https://github.com/borbit/">https://github.com/borbit/</a><br/>
     </p>
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>

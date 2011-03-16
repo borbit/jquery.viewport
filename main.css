@@ -4,7 +4,7 @@ body {
     line-height:24px;
 }
 
-h1, h2 {
+h1, h2, h3 {
     margin-top:20px;
     margin-bottom:20px;
     text-align:left;
@@ -14,6 +14,12 @@ h1, h2 {
 h2 {
     margin-top:30px;
     font-size:1.5em;
+}
+
+h3 {
+    margin-top:20px;
+    margin-bottom:10px;
+    font-size:1.1em;
 }
 
 p {
@@ -70,8 +76,7 @@ a:hover {
     position:absolute;
 }
 
-code {
-    display:block;
+.code {
     position:relative;
     margin-bottom:15px;
     padding:8px 0 8px 12px;
@@ -81,12 +86,12 @@ code {
     background:#ffffdd;
 }
 
-code pre {
+.code pre {
     font-family:Monaco, Consolas, "Lucida Console", monospace;
     font-size:12px;
 }
 
-code .hint {
+.code .hint {
     position:absolute;
     top:0;
     right:0;
@@ -95,6 +100,14 @@ code .hint {
     font-family:Monaco, Consolas, "Lucida Console", monospace;
     font-size:12px;
     color:#fff;
+}
+
+code {
+    padding:1px 5px;
+    border:1px solid #ffe773;
+    background:#ffffdd;
+    font-family:Monaco, Consolas, "Lucida Console", monospace;
+    font-size:12px;
 }
 
 .download {
