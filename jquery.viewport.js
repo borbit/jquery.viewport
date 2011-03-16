@@ -68,18 +68,18 @@ function Viewport(element, options) {
     element.css({position: 'relative', overflow: 'hidden'});
     content.css({position: 'absolute'});
 
-    if (options.content != false) {
-        content.append(options.content.detach())
-    } else {
-        content.append(element.contents().detach());
-    }
-
     if (options.width != false && options.height != false) {
         content.height(options.height);
         content.width(options.width);
     } else if (options.content != false) {
         content.height(options.content.height());
         content.width(options.content.width());
+    }
+
+    if (options.content != false) {
+        content.append(options.content)
+    } else {
+        content.append(element.contents());
     }
 
     binder.append(content);
