@@ -10,12 +10,19 @@ $.fn.viewport = function(options) {
     if (typeof(options) == 'string' && cache[selector] != null && $.isFunction(methods[options])) {
         return methods[options].apply(this, Array.prototype.slice.call(arguments, 1));
     } else {
-        if (typeof(options) == 'object' && options.jquery != null) {
+        var isObject = typeof(options) == 'object';
+
+        if (isObject && options.jquery != null) {
             options = $.extend({}, $.fn.viewport.defaults, {content: options});
-        } else if (typeof(options) == 'object' && options.tagName != null) {
+        } else if (isObject && (options.tagName != null || $.isArray(options))) {
             options = $.extend({}, $.fn.viewport.defaults, {content: $(options)});
-        } else {
+        } else if (isObject) {
+            if (options.content != null && $.isArray(options.content)) {
+                options.content = $(options.content);
+            }
             options = $.extend({}, $.fn.viewport.defaults, options);
+        } else {
+            options = $.extend({}, $.fn.viewport.defaults);
         }
 
         cache[selector] = Viewport(element, options);
@@ -46,31 +53,37 @@ $.fn.viewport.methods = {
 };
 
 $.fn.viewport.defaults = {
-    content: null,
     binderClass: 'viewportBinder',
-    contentClass: 'viewportContent'
+    contentClass: 'viewportContent',
+    content: false,
+    height: false,
+    width: false
 };
 
 function Viewport(element, options) {
     var binder = $('<div class="' + options.binderClass + '"></div>');
     var content = $('<div class="' + options.contentClass + '"></div>');
 
-    binder.css('position', 'absolute');
-    binder.css('overflow', 'hidden');
-    binder.append(content);
+    binder.css({position: 'absolute', overflow: 'hidden'});
+    element.css({position: 'relative', overflow: 'hidden'});
+    content.css({position: 'absolute'});
 
-    element.css('position', 'relative');
-    element.css('overflow', 'hidden');
-    element.append(binder);
+    if (options.content != false) {
+        content.append(options.content.detach())
+    } else {
+        content.append(element.contents().detach());
+    }
 
-    content.css('position', 'absolute');
-
-    if (options.content != null) {
-        options.content.detach();
-        content.append(options.content);
+    if (options.width != false && options.height != false) {
+        content.height(options.height);
+        content.width(options.width);
+    } else if (options.content != false) {
         content.height(options.content.height());
         content.width(options.content.width());
     }
+
+    binder.append(content);
+    element.append(binder);
 
     var contentOffset = {
         left: content.offset().left,

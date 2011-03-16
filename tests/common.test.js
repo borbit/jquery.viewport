@@ -52,7 +52,8 @@ TestCase("common", {
 
         assertEquals('absolute', content.css('position'));
     },
-    
+
+    // $(...).viewport({content: content});
     testViewportContentHasElementPassedThroughOptionContent: function() {
         var content = $('<div class="content"></div>');
         var viewport = $('<div></div>').viewport({content: content});
@@ -62,6 +63,7 @@ TestCase("common", {
         assertEquals(1, viewportContent.find('.content').length);
     },
 
+    // $(...).viewport(content);
     testViewportContentHasElementPassedThroughFirstParamAsJQueryObject: function() {
         var content = $('<div class="content"></div>');
         var viewport = $('<div></div>').viewport(content);
@@ -71,9 +73,19 @@ TestCase("common", {
         assertEquals(1, viewportContent.find('.content').length);
     },
 
+    // $(...).viewport(content.get(0));
     testViewportContentHasElementPassedThroughFirstParamAsDOMElement: function() {
         var content = $('<div class="content"></div>');
         var viewport = $('<div></div>').viewport(content.get(0));
+        var viewportBinder = viewport.find('.' + this.defaults.binderClass);
+        var viewportContent = viewportBinder.find('.' + this.defaults.contentClass);
+
+        assertEquals(1, viewportContent.find('.content').length);
+    },
+
+    // $(...).viewport();
+    testViewportContentHasElementThatInitiallyWasInTheViewportElementIfContentParamIsNotSet: function() {
+        var viewport = $('<div><div class="content"></div></div>').viewport();
         var viewportBinder = viewport.find('.' + this.defaults.binderClass);
         var viewportContent = viewportBinder.find('.' + this.defaults.contentClass);
 
@@ -399,6 +411,79 @@ TestCase("common", {
 
         assertEquals(height, size.height);
         assertEquals(width, size.width);
+    },
+
+    testElementThatInitiallyWasInTheViewportElementMovedToContentIfContentParamIsNotSet: function() {
+        var viewport = $('<div><div class="content"></div></div>').viewport();
+        var viewportBinder = viewport.find('.' + this.defaults.binderClass);
+        var viewportContent = viewportBinder.find('.' + this.defaults.contentClass);
+
+        assertEquals(1, viewportContent.find('.content').length);
+        assertEquals(0, viewport.children('.content').length);
+    },
+
+    testElementsThatInitiallyWereInTheViewportElementMovedToContentIfContentParamIsNotSet: function() {
+        /*:DOC html = <div>
+            <div class="content_1"></div>
+            <div class="content_2"></div>
+            <div class="content_3"></div>
+            <div class="content_4"></div>
+            <div class="content_5"></div>
+            </div>
+        */
+
+        var viewport = $(this.html).viewport();
+        var viewportBinder = viewport.find('.' + this.defaults.binderClass);
+        var viewportContent = viewportBinder.find('.' + this.defaults.contentClass);
+
+        assertEquals(5, viewportContent.children().length);
+        assertEquals(1, viewport.children().length);
+    },
+
+    testAllElementsThatArePassedAsArrayThroughContentParamAreAdded: function() {
+        var content = [
+            document.createElement('div'),
+            document.createElement('div'),
+            document.createElement('div'),
+            document.createElement('div'),
+            document.createElement('div')
+        ];
+
+        var viewport = $('<div></div>').viewport(content);
+        var viewportBinder = viewport.find('.' + this.defaults.binderClass);
+        var viewportContent = viewportBinder.find('.' + this.defaults.contentClass);
+
+        assertEquals(5, viewportContent.children().length);
+    },
+
+    testAllElementsThatArePassedAsArrayThroughContentParamInOptionsObjectAreAdded: function() {
+        var content = [
+            document.createElement('div'),
+            document.createElement('div'),
+            document.createElement('div'),
+            document.createElement('div'),
+            document.createElement('div')
+        ];
+
+        var viewport = $('<div></div>').viewport({content: content});
+        var viewportBinder = viewport.find('.' + this.defaults.binderClass);
+        var viewportContent = viewportBinder.find('.' + this.defaults.contentClass);
+
+        assertEquals(5, viewportContent.children().length);
+    },
+
+    testContentElementHasCorrectSizeIfHeightAndWeightParamsArePassed: function() {
+        var content = $('<div></div>');
+        var viewport = $('<div></div>').viewport({
+            content: content,
+            height: 1000,
+            width: 2000
+        });
+        var viewportBinder = viewport.find('.' + this.defaults.binderClass);
+        var viewportContent = viewportBinder.find('.' + this.defaults.contentClass);
+
+        assertEquals(1000, viewportContent.height());
+        assertEquals(2000, viewportContent.width());
     }
     
 });
