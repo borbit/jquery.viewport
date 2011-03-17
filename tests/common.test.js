@@ -523,7 +523,7 @@ TestCase("common", {
     },
 
     testHeightMethodReturnsHeightIfItIsCalledWithoutParam: function() {
-        var element = $('<div><div class="content"></div></div>');
+        var element = $('<div></div>');
         var height = 100;
 
         element.viewport({height: height, width: 200});
@@ -532,7 +532,7 @@ TestCase("common", {
     },
 
     testWidthMethodReturnsWidthIfItIsCalledWithoutParam: function() {
-        var element = $('<div><div class="content"></div></div>');
+        var element = $('<div></div>');
         var width = 100;
 
         element.viewport({width: width, height: 200});
