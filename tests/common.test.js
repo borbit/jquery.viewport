@@ -484,6 +484,60 @@ TestCase("common", {
 
         assertEquals(1000, viewportContent.height());
         assertEquals(2000, viewportContent.width());
+    },
+
+    testContentBoxHeightIsChangedAfterHeightMethodIsCalled: function() {
+        var element = $('<div></div>');
+        element.height(500);
+        element.width(500);
+
+        var content = $('<div class="content"></div>');
+        content.height(700);
+        content.width(700);
+
+        element.viewport({content: content});
+        element.viewport('height', 1000);
+
+        var viewportBinder = element.find('.' + this.defaults.binderClass);
+        var viewportContent = viewportBinder.find('.' + this.defaults.contentClass);
+
+        assertEquals(1000, viewportContent.height());
+    },
+
+    testContentBoxWidthIsChangedAfterWidthMethodIsCalled: function() {
+        var element = $('<div></div>');
+        element.height(500);
+        element.width(500);
+
+        var content = $('<div class="content"></div>');
+        content.height(700);
+        content.width(700);
+
+        element.viewport({content: content});
+        element.viewport('width', 1000);
+
+        var viewportBinder = element.find('.' + this.defaults.binderClass);
+        var viewportContent = viewportBinder.find('.' + this.defaults.contentClass);
+
+        assertEquals(1000, viewportContent.width());
+    },
+
+    testHeightMethodReturnsHeightIfItIsCalledWithoutParam: function() {
+        var element = $('<div><div class="content"></div></div>');
+        var height = 100;
+
+        element.viewport({height: height, width: 200});
+
+        assertEquals(height, element.viewport('height'));
+    },
+
+    testWidthMethodReturnsWidthIfItIsCalledWithoutParam: function() {
+        var element = $('<div><div class="content"></div></div>');
+        var width = 100;
+
+        element.viewport({width: width, height: 200});
+
+        assertEquals(width, element.viewport('width'));
     }
     
 });

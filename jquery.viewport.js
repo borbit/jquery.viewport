@@ -2,37 +2,29 @@
 
 var cache = {};
 
-$.fn.viewport = function(options) {
-    var element = this.eq(0);
-    var selector = this.selector;
-    var methods = $.fn.viewport.methods;
+function processContentOption(options) {
+    var isObject = typeof(options) == 'object';
 
-    if (typeof(options) == 'string' && cache[selector] != null && $.isFunction(methods[options])) {
-        return methods[options].apply(this, Array.prototype.slice.call(arguments, 1));
-    } else {
-        var isObject = typeof(options) == 'object';
-
-        if (isObject && options.jquery != null) {
-            options = $.extend({}, $.fn.viewport.defaults, {content: options});
-        } else if (isObject && (options.tagName != null || $.isArray(options))) {
-            options = $.extend({}, $.fn.viewport.defaults, {content: $(options)});
-        } else if (isObject) {
-            if (options.content != null && $.isArray(options.content)) {
-                options.content = $(options.content);
-            }
-            options = $.extend({}, $.fn.viewport.defaults, options);
-        } else {
-            options = $.extend({}, $.fn.viewport.defaults);
-        }
-
-        cache[selector] = Viewport(element, options);
-        cache[selector].adjust();
+    if (isObject && options.jquery != null) {
+        return options;
+    } else if (isObject && options.tagName != null) {
+        return $(options);
+    } else if (isObject && $.isArray(options)) {
+        return $(options);
+    } else if (isObject && options.content != null) {
+        return processContentOption(options.content);
     }
 
-    return this;
-};
+    return $.fn.viewport.defaults.content;
+}
 
-$.fn.viewport.methods = {
+var publicMethods = {
+    content: function() {
+        return cache[this.selector].content;
+    },
+    binder: function() {
+        return cache[this.selector].binder;
+    },
     update: function() {
         cache[this.selector].adjust();
         return this;
@@ -41,15 +33,42 @@ $.fn.viewport.methods = {
         if (height == null || width == null) {
             return cache[this.selector].getContentSize();
         }
-        cache[this.selector].setContentSize(height, width);
+        cache[this.selector].setContentHeight(height);
+        cache[this.selector].setContentWidth(width);
         return this;
     },
-    content: function() {
-        return cache[this.selector].content;
+    height: function(height) {
+        if (height == null) {
+            return cache[this.selector].getContentSize().height;
+        }
+        cache[this.selector].setContentHeight(height);
+        return this;
     },
-    binder: function() {
-        return cache[this.selector].binder;
+    width: function(width) {
+        if (width == null) {
+            return cache[this.selector].getContentSize().width;
+        }
+        cache[this.selector].setContentWidth(width);
+        return this;
     }
+};
+
+$.fn.viewport = function(options) {
+    options = options || {};
+
+    var element = this.eq(0);
+    var selector = this.selector;
+
+    if (typeof(options) == 'string' && cache[selector] != null && $.isFunction(publicMethods[options])) {
+        return publicMethods[options].apply(this, Array.prototype.slice.call(arguments, 1));
+    } else {
+        options.content = processContentOption(options);
+        options = $.extend({}, $.fn.viewport.defaults, options);
+        cache[selector] = createViewport(element, options);
+        cache[selector].adjust();
+    }
+
+    return this;
 };
 
 $.fn.viewport.defaults = {
@@ -60,7 +79,7 @@ $.fn.viewport.defaults = {
     width: false
 };
 
-function Viewport(element, options) {
+function createViewport(element, options) {
     var binder = $('<div class="' + options.binderClass + '"></div>');
     var content = $('<div class="' + options.contentClass + '"></div>');
 
@@ -166,11 +185,18 @@ function Viewport(element, options) {
         }
     }
 
-    function setContentSize(height, width) {
-        contentSize.height = height;
-        contentSize.width = width;
-        content.height(height);
-        content.width(width);
+    function setContentHeight(height) {
+        if (height != null) {
+            contentSize.height = height;
+            content.height(height);
+        }
+    }
+
+    function setContentWidth(width) {
+        if (width != null) {
+            contentSize.width = width;
+            content.width(width);
+        }
     }
 
     function getContentSize() {
@@ -179,7 +205,8 @@ function Viewport(element, options) {
 
     return {
         adjust: adjust,
-        setContentSize: setContentSize,
+        setContentHeight: setContentHeight,
+        setContentWidth: setContentWidth,
         getContentSize: getContentSize,
         content: content,
         binder: binder
