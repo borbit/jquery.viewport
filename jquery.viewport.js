@@ -1,8 +1,6 @@
 (function($) {
 
-var cache = {};
-
-function processContentOption(options) {
+function getContentOption(options) {
     var isObject = typeof(options) == 'object';
 
     if (isObject && options.jquery != null) {
@@ -12,7 +10,7 @@ function processContentOption(options) {
     } else if (isObject && $.isArray(options)) {
         return $(options);
     } else if (isObject && options.content != null) {
-        return processContentOption(options.content);
+        return getContentOption(options.content);
     }
 
     return $.fn.viewport.defaults.content;
@@ -20,52 +18,60 @@ function processContentOption(options) {
 
 var publicMethods = {
     content: function() {
-        return cache[this.selector].content;
+        return this.content;
     },
     binder: function() {
-        return cache[this.selector].binder;
+        return this.binder;
     },
     update: function() {
-        cache[this.selector].adjust();
-        return this;
+        this.adjust();
     },
     size: function(height, width) {
         if (height == null || width == null) {
-            return cache[this.selector].getContentSize();
+            return this.getContentSize();
         }
-        cache[this.selector].setContentHeight(height);
-        cache[this.selector].setContentWidth(width);
-        return this;
+        this.setContentHeight(height);
+        this.setContentWidth(width);
     },
     height: function(height) {
         if (height == null) {
-            return cache[this.selector].getContentSize().height;
+            return this.getContentSize().height;
         }
-        cache[this.selector].setContentHeight(height);
-        return this;
+        this.setContentHeight(height);
     },
     width: function(width) {
         if (width == null) {
-            return cache[this.selector].getContentSize().width;
+            return this.getContentSize().width;
         }
-        cache[this.selector].setContentWidth(width);
-        return this;
+        this.setContentWidth(width);
     }
 };
 
-$.fn.viewport = function(options) {
-    options = options || {};
+$.fn.viewport = function(input) {
+    input = input || {};
 
     var element = this.eq(0);
-    var selector = this.selector;
+    var viewport = element.data('viewport');
 
-    if (typeof(options) == 'string' && cache[selector] != null && $.isFunction(publicMethods[options])) {
-        return publicMethods[options].apply(this, Array.prototype.slice.call(arguments, 1));
-    } else {
-        options.content = processContentOption(options);
+    if (typeof(input) == 'string' && viewport && $.isFunction(publicMethods[input])) {
+        var args = Array.prototype.slice.call(arguments, 1);
+        var result = publicMethods[input].apply(viewport, args);
+
+        if (result) {
+            return result;
+        }
+    }
+
+    if (!viewport) {
+        var options = {content: getContentOption(input)};
+
+        if (!$.isArray(input) && input.tagName == null && input.jquery == null) {
+            options = $.extend({}, input, options);
+        }
+
         options = $.extend({}, $.fn.viewport.defaults, options);
-        cache[selector] = createViewport(element, options);
-        cache[selector].adjust();
+        viewport = createViewport(element, options);
+        element.data('viewport', viewport);
     }
 
     return this;
@@ -96,9 +102,9 @@ function createViewport(element, options) {
     }
 
     if (options.content != false) {
-        content.append(options.content)
+        content.append(options.content.detach())
     } else {
-        content.append(element.contents());
+        content.append(element.contents().detach());
     }
 
     binder.append(content);
@@ -130,6 +136,8 @@ function createViewport(element, options) {
         contentOffset.top = ui.position.top;
     });
 
+    adjust();
+
     function adjust() {
         var viewportSize = {
             height: element.height(),
@@ -152,11 +160,10 @@ function createViewport(element, options) {
                 contentOffset.top = Math.floor(diff / 2);
                 content.css('top', contentOffset.top);
             } else {
-                var newTop = contentOffset.top - -(diff - heightDiff);
-                if(newTop >= 0) {
-                    content.css('top', newTop);
-                    contentOffset.top = newTop;
-                }
+                var newTop = contentOffset.top + (diff - heightDiff);
+                newTop = newTop >= 0 ? newTop : 0;
+                content.css('top', newTop);
+                contentOffset.top = newTop;
             }
             heightDiff = diff;
         }
@@ -175,11 +182,10 @@ function createViewport(element, options) {
                 contentOffset.left = Math.floor(diff / 2);
                 content.css('left', contentOffset.left);
             } else {
-                var newLeft = contentOffset.left - -(diff - widthDiff);
-                if(newLeft >= 0) {
-                    content.css('left', newLeft);
-                    contentOffset.left = newLeft;
-                }
+                var newLeft = contentOffset.left + (diff - widthDiff);
+                newLeft = newLeft >= 0 ? newLeft : 0;
+                content.css('left', newLeft);
+                contentOffset.left = newLeft;
             }
             widthDiff = diff;
         }
