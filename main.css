@@ -27,15 +27,13 @@ p {
 }
 
 a {
-    color:#fff;
-    padding:0 5px;
-    background:#0c5aa6;
+    color:#0c5aa6;
+    font-weight:bold;
     text-decoration:none;
-    color:#fff;
 }
 
 a:hover {
-    background:#408ad2;
+    color:#408ad2;
 }
 
 #forkme {
@@ -67,9 +65,11 @@ a:hover {
     position:relative;
     overflow:hidden;
     margin:20px 0;
-    height:350px;
+    height:300px;
     width:600px;
     -webkit-box-shadow:0 0 100px #777;
+    -moz-box-shadow:0 0 100px #777;
+    box-shadow:0 0 100px #777;
 }
 
 #viewport img {
@@ -83,7 +83,6 @@ a:hover {
     line-height:18px;
     border:1px solid #ffe773;
     border-left:4px solid #ffd300;
-    background:#ffffdd;
 }
 
 .code pre {
@@ -103,9 +102,7 @@ a:hover {
 }
 
 code {
-    padding:1px 5px;
-    border:1px solid #ffe773;
-    background:#ffffdd;
+    padding:0px 5px;
     font-family:Monaco, Consolas, "Lucida Console", monospace;
     font-size:12px;
 }
@@ -114,6 +111,80 @@ code {
     margin-bottom:10px;
 }
 
-.download a {
-    margin-right:10px;
+.subj {
+    float:left;
+    display:block;
+    width:150px;
+    font-weight:bold;
+}
+
+.desc {
+    clear:both;
+    margin:5px 0 25px 0;
+}
+
+#xRayIfBigger {
+    margin-bottom:15px;
+}
+
+#xRayIfBigger span,
+#xRayIfSmaller span {
+    float:left;
+    display:block;
+    padding:0 5px;
+    line-height:18px;
+    background:#000;
+    font-size:10pt;
+    color:#fff;
+}
+
+#xRayIfBigger .binderFrame {
+    clear:both;
+    padding:30px;
+    height:290px;
+    border:1px solid #000;
+}
+
+#xRayIfBigger .contentFrame {
+    clear:both;
+    padding:30px;
+    height:190px;
+    border:1px solid #000;
+    background:url(http://borbit.org/img/dragme.gif) no-repeat left top;
+}
+
+#xRayIfBigger .contentFrame span {
+    background:#00a;
+}
+
+#xRayIfBigger .viewportFrame {
+    clear:both;
+    padding:30px;
+    height:90px;
+    border:2px solid #00a;
+}
+
+#xRayIfSmaller .viewportFrame {
+    clear:both;
+    padding:30px;
+    height:240px;
+    border:2px solid #000;
+}
+
+#xRayIfSmaller .contentFrame {
+    clear:both;
+    height:200px;
+    border:1px solid #00a;
+    background:url(http://borbit.org/img/dragme.gif) no-repeat left top;
+}
+
+#xRayIfSmaller .binderFrame {
+    clear:both;
+    height:202px;
+    border:1px solid #000;
+}
+
+#xRayIfSmaller .contentTitle {
+    margin-left:10px;
+    background:#00a;
 }

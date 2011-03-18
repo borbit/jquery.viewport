@@ -68,83 +68,152 @@ $(function() {
 </pre>
 </div>
 
-    <h2>Downloads v.0.1.0</h2>
-    
-    <div class="download">
-        <a href="https://github.com/borbit/jquery.viewport/raw/master/jquery.viewport.js">Compressed <i>(1.8 kb)</i></a>
-        <a href="https://github.com/borbit/jquery.viewport/raw/master/jquery.viewport.min.js">Uncompressed <i>(4 kb)</i></a>
-        <i>(Right-click and use "Save as")</i>
-    </div>
+    <h2>Downloads (0.1.0)</h2>
+    <p style="margin-bottom:10px;">
+        The compressed version is compressed by <a href="http://closure-compiler.appspot.com/">Google Closure Compiler</a>
+        with simple optimization mode. To download a file just right-click and use "Save As...".
+    </p>
+    <a  href="https://github.com/borbit/jquery.viewport/raw/master/jquery.viewport.js">Compressed Version <i>(2.4 kb)</i></a><br/>
+    <a href="https://github.com/borbit/jquery.viewport/raw/master/jquery.viewport.min.js">Uncompressed Version <i>(6 kb)</i></a>
 
     <h2>Documentation</h2>
 
+    <p class="desc">
+        The plugin creates two frames to display content: the "content" frame and the "binder"
+        frame. They are aligned to the center of the main "viewport" frame. If the content you want
+        to display in a viewport is bigger then the viewport itself then the "binder" frame's size is
+        set by formula - <code>viewport_width + (content_width - viewport_width) * 2</code> (the same for height).
+        This is the easiest way I've found to prevent "content" frame's borders do not go into the viewport's
+        rect. I can easily say that "content" frame is "draggable" and its "containment" is "parent" and it 
+        won't be able to be dragged out the "binder" frame and so its borders will be in the "viewort"
+        frame's rect never.
+    <p>
+
+    <div id="xRayIfBigger">
+        <span>Binder frame</span>
+        <div class="binderFrame">
+
+            <span>Content frame</span>
+            <div class="contentFrame">
+
+                <span>Viewport frame</span>
+                <div class="viewportFrame">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <p class="desc">
+        If the content you want to display is smaller then "viewport" frame then the
+        "binder" frame's size wil be the same as "content" frame's size and they will
+        always be aligned to the center of the "viewport" frame.
+    <p>
+
+    <div id="xRayIfSmaller">
+        <span>Viewport frame</span>
+        <div class="viewportFrame">
+            <span class="binderTitle">Binder frame</span>
+            <span class="contentTitle">Content frame</span>
+            <div class="binderFrame"><div class="contentFrame"></div></div>
+        </div>
+    </div>
+    
     <h3>Options</h3>
     
-    <span style="display:inline-block;width:150px;"><code>'content'</code></span> 
+    <span class="subj">content</span>
     <i>Default:</i> <code>false</code>
     
-    <p style="margin:5px 0 10px 0;">
+    <p class="desc">
         Reference or selector to the DOM element which will be shown as content in the viewport box.
-        Possible values: <code>HTMLElement</code>, <code>jQueryObject</code>, <code>'.selector'</code>,
-        <code>false</code>. In case if this option is not set or it is <code>false</code> all
-        children elements the viewport element contains will be taken as a content.
+        Possible values: <code>HTMLElement</code>, <code>Array(HTMLElement [,HTMLElement])</code>, <code>jQueryObject</code>,
+        <code>'.selector'</code>, <code>false</code>. In case if this option is not set or it is
+        <code>false</code> all children elements the viewport element contains will be taken as a content.
     </p>
 
-    <span style="display:inline-block;width:150px;"><code>'height'</code></span>
+    <span class="subj">height</span>
     <i>Default:</i> <code>false</code>
     
-    <p style="margin:5px 0 10px 0;">
+    <p class="desc">
         Height of the content frame. If it is not set or set to <code>false</code>
         then the height of a content element passed throw the <code>'content'</code>
         option will be taken, but only if the content isn't passed as array of elements.
         Works only if the <code>'width'</code> option is set.
     </p>
 
-    <span style="display:inline-block;width:150px;"><code>'width'</code></span>
+    <span class="subj">width</span>
     <i>Default:</i> <code>false</code>
 
-    <p style="margin:5px 0 10px 0;">
+    <p class="desc">
         Width of the content frame. Works in the same way as <code>'height'</code>
         option and also doesn't work if <code>'height'</code> option isn't set.
     </p>
 
-    <!--<span style="display:inline-block;width:150px;"><code>'contentClass'</code></span>
+    <span class="subj">contentClass</span>
     <i>Default:</i> <code>'viewportContent'</code>
 
-    <p style="margin:5px 0 10px 0;">
-        Class name of the content frame.
+    <p class="desc">
+        Class name of the content frame's element.
     </p>
 
-    <span style="display:inline-block;width:150px;"><code>'binderClass'</code></span>
+    <span class="subj">binderClass</span>
     <i>Default:</i> <code>'viewportBinder'</code>
 
-    <p style="margin:5px 0 10px 0;">
-        Class name of the binder frame.
-    </p>-->
+    <p class="desc">
+        Class name of the binder frame's element.
+    </p>
     
     <h3>Methods</h3>
 
-    <code>'update'</code>
+    <span class="subj">update</span>
+    <code>$(...).viewport('update');</code>
 
-    <p style="margin:5px 0 10px 0;">
+    <p class="desc">
         Updates position and size of the binder frame and updates position of the
         content frame regarding the viewport frame size. This method should be called
-        if viewport element's size is changed. Return value <code>jQueryObject</code>.
+        if viewport element's size is changed. Without params. Return value: <code>jQueryObject</code>.
     </p>
     
-    <code>'size'</code>
+    <span class="subj">size</span>
+    <code>$(...).viewport('size' [, height, width]);</code>
 
-    <p style="margin:5px 0 10px 0;">
-        Sets or returns content element's size. It is useful when your content doesn't
+    <p class="desc">
+        Setter/getter of the content frame's size. Useful when your content doesn't
         have static width and height. Return value: if parameters are not set -
         <code>{height: [number], width: [number]}</code>, else - <code>jQueryObject</code>.
     </p>
 
-    <code style="margin-right:5px;">'content'</code> Returns a jQuery object with content's element.<br/>
+    <span class="subj">height</span>
+    <code>$(...).viewport('height' [, height]);</code>
 
-    <code style="margin-right:5px;">'binder'</code> Returns a jQuery object with binder's element.<br/>
+    <p class="desc">
+        Setter/getter for the content frame's height. Useful when your content doesn't
+        have static height. Return value: <code>number</code> / <code>jQueryObject</code>.
+    </p>
 
-    <h2>Change log</h2>
+    <span class="subj">width</span>
+    <code>$(...).viewport('width' [, width]);</code>
+
+    <p class="desc">
+        Setter/getter for the content frame's width. Useful when your content doesn't
+        have static width. Return value: <code>number</code> / <code>jQueryObject</code>.
+    </p>
+
+    <span class="subj">content</span>
+    <code>$(...).viewport('content');</code>
+    
+    <p class="desc">
+        Getter for the content frame's element. Useful when you have to make your content
+        draggable or smth like that. Return value: <code>jQueryObject</code>.
+    </p>
+
+    <span class="subj">binder</span>
+    <code>$(...).viewport('binder');</code>
+    
+    <p class="desc">
+        Getter for the binder frame's element. Return value: <code>jQueryObject</code>.
+    </p>
+
+    <h2>Changelog</h2>
 
     <h3>0.1.0</h3>
     <p>
@@ -154,12 +223,14 @@ $(function() {
     <h2>Credits</h2>
 
     <p>
-        <a href="https://developer.mozilla.org/en/JavaScript/Guide" title="Learn JavaScript JS" style="float:right;background:none;">
+        <a href="https://developer.mozilla.org/en/JavaScript/Guide" title="Learn JavaScript JS" style="float:right;background:none;margin-top:-15px;">
             <img src='http://static.jsconf.us/promotejsh.gif' height='150' width='180' alt='JavaScript Array constructor'/>
         </a>
-        Serge Borbit<br/>
+        <h3>Serge Borbit</h3>
         <a href="mailto:serge.borbit@gmail.com">serge.borbit@gmail.com</a><br/>
         <a href="https://github.com/borbit/">https://github.com/borbit/</a><br/>
+        <a href="https://github.com/borbit/">http://linkedin.com/pub/serge-borbit/14/800/813</a><br/>
+        <a href="https://github.com/borbit/">http://www.facebook.com/serge.borbit/</a>
     </p>
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
