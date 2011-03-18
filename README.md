@@ -1,1 +1,1 @@
-Comming soon
+For demo, documentation and description see: [http://borbit.github.com/jquery.viewport/](http://borbit.github.com/jquery.viewport/).
