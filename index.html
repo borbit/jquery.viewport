@@ -71,8 +71,8 @@ $(function() {
     <h2>Downloads v.0.1.0</h2>
     
     <div class="download">
-        <a href="#">Compressed <i>(1.8 kb)</i></a>
-        <a href="#">Uncompressed <i>(4 kb)</i></a>
+        <a href="https://github.com/borbit/jquery.viewport/raw/master/jquery.viewport.js">Compressed <i>(1.8 kb)</i></a>
+        <a href="https://github.com/borbit/jquery.viewport/raw/master/jquery.viewport.min.js">Uncompressed <i>(4 kb)</i></a>
         <i>(Right-click and use "Save as")</i>
     </div>
 
@@ -80,27 +80,56 @@ $(function() {
 
     <h3>Options</h3>
     
-    <code>{content: false}</code>
+    <span style="display:inline-block;width:150px;"><code>'content'</code></span> 
+    <i>Default:</i> <code>false</code>
     
     <p style="margin:5px 0 10px 0;">
         Reference or selector to the DOM element which will be shown as content in the viewport box.
-        Possible values: <code>HTMLElement</code>, <code>false</code>, <code>jQueryElement</code>,
-        <code>'.selector'</code>. In case if this option is not set or it is <code>false</code> all
+        Possible values: <code>HTMLElement</code>, <code>jQueryObject</code>, <code>'.selector'</code>,
+        <code>false</code>. In case if this option is not set or it is <code>false</code> all
         children elements the viewport element contains will be taken as a content.
     </p>
 
-    <code style="margin-right:5px;">{contentClass: 'viewportContent'}</code> Content element's class name.<br/>
+    <span style="display:inline-block;width:150px;"><code>'height'</code></span>
+    <i>Default:</i> <code>false</code>
+    
+    <p style="margin:5px 0 10px 0;">
+        Height of the content frame. If it is not set or set to <code>false</code>
+        then the height of a content element passed throw the <code>'content'</code>
+        option will be taken, but only if the content isn't passed as array of elements.
+        Works only if the <code>'width'</code> option is set.
+    </p>
 
-    <code style="margin-right:5px;">{binderClass: 'viewportBinder'}</code> Binder element's class name.
+    <span style="display:inline-block;width:150px;"><code>'width'</code></span>
+    <i>Default:</i> <code>false</code>
 
+    <p style="margin:5px 0 10px 0;">
+        Width of the content frame. Works in the same way as <code>'height'</code>
+        option and also doesn't work if <code>'height'</code> option isn't set.
+    </p>
+
+    <!--<span style="display:inline-block;width:150px;"><code>'contentClass'</code></span>
+    <i>Default:</i> <code>'viewportContent'</code>
+
+    <p style="margin:5px 0 10px 0;">
+        Class name of the content frame.
+    </p>
+
+    <span style="display:inline-block;width:150px;"><code>'binderClass'</code></span>
+    <i>Default:</i> <code>'viewportBinder'</code>
+
+    <p style="margin:5px 0 10px 0;">
+        Class name of the binder frame.
+    </p>-->
+    
     <h3>Methods</h3>
 
     <code>'update'</code>
 
     <p style="margin:5px 0 10px 0;">
-        Updates binder's position and size and updates content position regarding
-        the viewport element's size. This method should be called if viewport element's
-        size is changed. Return value <code>jQueryElement</code>.
+        Updates position and size of the binder frame and updates position of the
+        content frame regarding the viewport frame size. This method should be called
+        if viewport element's size is changed. Return value <code>jQueryObject</code>.
     </p>
     
     <code>'size'</code>
@@ -108,7 +137,7 @@ $(function() {
     <p style="margin:5px 0 10px 0;">
         Sets or returns content element's size. It is useful when your content doesn't
         have static width and height. Return value: if parameters are not set -
-        <code>{height: [number], width: [number]}</code>, else - <code>jQueryElement</code>.
+        <code>{height: [number], width: [number]}</code>, else - <code>jQueryObject</code>.
     </p>
 
     <code style="margin-right:5px;">'content'</code> Returns a jQuery object with content's element.<br/>
@@ -152,6 +181,7 @@ $(function() {
                 containment: 'parent'
             });
             content.scraggable({
+                sensitivity: 5,
                 containment: 'parent'
             });
         });
