@@ -8,24 +8,6 @@ TestCase("content", {
         assertEquals(1, viewportContent.find('.content').length);
     },
 
-    // $(...).viewport(jQueryObject);
-    testPassingThroughFirstParamAsJQueryObject: function() {
-        var content = $('<div class="content"></div>');
-        var element = $('<div></div>').viewport(content);
-        var viewportContent = element.viewport('content');
-
-        assertEquals(1, viewportContent.find('.content').length);
-    },
-
-    // $(...).viewport(DOMElement);
-    testPassingThroughFirstParamAsDOMElement: function() {
-        var content = $('<div class="content"></div>');
-        var element = $('<div></div>').viewport(content.get(0));
-        var viewportContent = element.viewport('content');
-
-        assertEquals(1, viewportContent.find('.content').length);
-    },
-
     // $('<div><div class="content"></div></div>').viewport();
     testInitiallContentPassedIfParamIsNotSet: function() {
         var element = $('<div><div class="content"></div></div>').viewport();
@@ -59,22 +41,6 @@ TestCase("content", {
 
         assertEquals(5, viewportContent.children().length);
         assertEquals(1, element.children().length);
-    },
-
-    // $(...).viewport(ArrayOfDOMElements);
-    testPassingThroughContentParamAsArrayOfDOMElements: function() {
-        var content = [
-            document.createElement('div'),
-            document.createElement('div'),
-            document.createElement('div'),
-            document.createElement('div'),
-            document.createElement('div')
-        ];
-
-        var element = $('<div></div>').viewport(content);
-        var viewportContent = element.viewport('content');
-
-        assertEquals(5, viewportContent.children().length);
     },
 
     // $(...).viewport({content: ArrayOfDOMElements});

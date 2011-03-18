@@ -40,7 +40,7 @@ TestCase("methods", {
         content.height(700);
         content.width(700);
 
-        var element = $('<div></div>').viewport(content);
+        var element = $('<div></div>').viewport({content: content});
         element.height(300);
         element.width(300);
         
@@ -111,12 +111,12 @@ TestCase("methods", {
     testContentMethodReturnsJQueryObjectWithContentElement: function() {
         var element = $('<div></div>').viewport();
 
-        assertTrue(element.viewport('content').hasClass($.fn.viewport.defaults.contentClass));
+        assertTrue(element.viewport('content').hasClass(element.viewport('option', 'contentClass')));
     },
 
     testBinderMethodReturnsJQueryObjectWithBinderElement: function() {
         var element = $('<div></div>').viewport();
         
-        assertTrue(element.viewport('binder').hasClass($.fn.viewport.defaults.binderClass));
+        assertTrue(element.viewport('binder').hasClass(element.viewport('option', 'binderClass')));
     }
 });

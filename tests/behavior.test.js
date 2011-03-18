@@ -1,6 +1,14 @@
 TestCase("behavior", {
     setUp: function() {
-        this.defaults = $.fn.viewport.defaults;
+        var element = $('div').viewport();
+
+        this.defaults = {
+            content: element.viewport('option', 'content'),
+            binderClass: element.viewport('option', 'binderClass'),
+            contentClass: element.viewport('option', 'contentClass'),
+            height: element.viewport('option', 'height'),
+            width: element.viewport('option', 'width')
+        };
     },
 
     testReturnsJQueryObject: function() {
@@ -130,8 +138,8 @@ TestCase("behavior", {
         content.height(700);
         content.width(700);
 
-        var viewport = element.viewport({content: content});
-        var viewportBinder = viewport.find('.' + this.defaults.binderClass);
+        element.viewport({content: content});
+        var viewportBinder = element.viewport('binder');
 
         assertEquals(900, viewportBinder.height());
         assertEquals(900, viewportBinder.width());
@@ -174,21 +182,6 @@ TestCase("behavior", {
         assertEquals('100px', viewportContent.css('top'));
     },
 
-    testOnlyFirstFetchedElementIsProcessedAsViewport: function() {
-        var content = $('<div class="content"></div>');
-
-        $(document.body).append($('<div class="viewport"></div>'));
-        $(document.body).append($('<div class="viewport"></div>'));
-
-        $('.viewport').viewport({content: content});
-
-        var viewport_1 = $('.viewport').eq(0);
-        var viewport_2 = $('.viewport').eq(1);
-
-        assertEquals(1, viewport_1.find('.' + this.defaults.binderClass).length);
-        assertEquals(0, viewport_2.find('.' + this.defaults.binderClass).length);
-    },
-
     testContentBoxHasCorrectPositionAfterItWasDraggedAndViewportSizeBecomeSmaller: function() {
         var element = $('<div></div>');
         element.height(500);
@@ -229,7 +222,7 @@ TestCase("behavior", {
         element.height(500);
         element.width(500);
 
-        element.viewport(content)
+        element.viewport({content: content});
 
         content.trigger('dragstart');
         content.css('left', 50);
