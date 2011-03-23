@@ -4,6 +4,7 @@ $.widget('ui.viewport', {
     options:{
         binderClass: 'viewportBinder',
         contentClass: 'viewportContent',
+        position: 'center',
         content: false,
         height: false,
         width: false
@@ -29,7 +30,7 @@ $.widget('ui.viewport', {
     adjust: function() { this.viewport.adjust(); },
 
     update:  function() {
-        this.viewport.init();
+        this.viewport.updateContentSize();
         this.viewport.adjust();
     },
 
@@ -75,11 +76,14 @@ function createViewport(element, options) {
     binder.append(content);
     element.append(binder);
 
-    var contentPosition, contentSize,
-        centerHorizontal = true,
+    var centerHorizontal = true,
         centerVertical = true,
         heightDiff = 0,
         widthDiff = 0;
+
+    var contentPosition = {top: 0, left: 0};
+    var contentSize = {height: 0, width: 0};
+    var viewportSize = {height: 0, width: 0};
 
     element.bind('dragstop', function(event, ui) {
         if(contentPosition.top != ui.position.top) {
@@ -93,6 +97,21 @@ function createViewport(element, options) {
     });
 
     function init() {
+        updateContentSize();
+        updateContentPosition();
+    }
+
+    function updateContentPosition() {
+        if (options.position.indexOf('bottom') != -1) {
+            centerVertical = false;
+            contentPosition.top = viewportSize.height - contentSize.height;
+        } else if (options.position.indexOf('top') != -1) {
+            centerVertical = false;
+            contentPosition.top = 0;
+        }
+    }
+
+    function updateContentSize() {
         if (options.width != false && options.height != false) {
             content.height(options.height);
             content.width(options.width);
@@ -105,18 +124,11 @@ function createViewport(element, options) {
             height: content.height(),
             width: content.width()
         };
-
-        contentPosition = {
-            left: content.position().left,
-            top: content.position().top
-        };
     }
 
     function adjust() {
-        var viewportSize = {
-            height: element.height(),
-            width: element.width()
-        };
+        viewportSize.height = element.height();
+        viewportSize.width = element.width();
 
         var diff;
 
@@ -186,6 +198,7 @@ function createViewport(element, options) {
     return {
         init: init,
         adjust: adjust,
+        updateContentSize: updateContentSize,
         setContentHeight: setContentHeight,
         setContentWidth: setContentWidth,
         getContentSize: getContentSize,

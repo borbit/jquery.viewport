@@ -6,6 +6,7 @@ TestCase("behavior", {
             content: element.viewport('option', 'content'),
             binderClass: element.viewport('option', 'binderClass'),
             contentClass: element.viewport('option', 'contentClass'),
+            position: element.viewport('option', 'position'),
             height: element.viewport('option', 'height'),
             width: element.viewport('option', 'width')
         };
@@ -22,6 +23,7 @@ TestCase("behavior", {
         assertNotUndefined(this.defaults.content);
         assertNotUndefined(this.defaults.binderClass);
         assertNotUndefined(this.defaults.contentClass);
+        assertNotUndefined(this.defaults.position);
         assertNotUndefined(this.defaults.height);
         assertNotUndefined(this.defaults.width);
     },

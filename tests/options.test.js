@@ -23,5 +23,41 @@ TestCase("options", {
         var viewportBinder = element.viewport('binder');
 
         assertTrue(viewportBinder.hasClass(myClass));
+    },
+
+    // $(...).viewport({position: 'top'});
+    testPositionParamContentFramePostionSetToTop: function() {
+        var element = $('<div></div>').height(100).width(100);
+        var content = $('<div></div>').height(200).width(200);
+
+        element.viewport({content: content, position: 'top'});
+        
+        var viewportContent = element.viewport('content');
+
+        assertEquals('100px', viewportContent.css('top'));
+    },
+
+    // $(...).viewport({position: 'bottom'});
+    testPositionParamContentFramePostionSetToBottom: function() {
+        var element = $('<div></div>').height(100).width(100);
+        var content = $('<div></div>').height(200).width(200);
+
+        element.viewport({content: content, position: 'bottom'});
+
+        var viewportContent = element.viewport('content');
+
+        assertEquals('0px', viewportContent.css('top'));
+    },
+
+    // $(...).viewport({position: 'center'});
+    testPositionParamContentFramePostionSetToCenter: function() {
+        var element = $('<div></div>').height(100).width(100);
+        var content = $('<div></div>').height(200).width(200);
+
+        element.viewport({content: content, position: 'center'});
+
+        var viewportContent = element.viewport('content');
+
+        assertEquals('50px', viewportContent.css('top'));
     }
 });
