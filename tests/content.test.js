@@ -27,13 +27,12 @@ TestCase("content", {
 
     // $('<div><div class="cont"></div><div class="cont"></div></div>').viewport();
     testInitiallContentThatAreSeveralElementsAreMovedIfContentParamIsNotSet: function() {
-        /*:DOC html = <div>
-            <div class="content_1"></div>
-            <div class="content_2"></div>
-            <div class="content_3"></div>
-            <div class="content_4"></div>
-            <div class="content_5"></div>
-            </div>
+        /*:DOC html = <div><div class="content_1"></div>
+                           <div class="content_2"></div>
+                           <div class="content_3"></div>
+                           <div class="content_4"></div>
+                           <div class="content_5"></div>
+                      </div>
         */
 
         var element = $(this.html).viewport();

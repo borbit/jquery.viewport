@@ -1,5 +1,5 @@
 TestCase("methods", {
-    testHeightMethodChangesContentBoxHeight: function() {
+    testHeightMethodChangesContentFrameHeight: function() {
         var element = $('<div></div>').viewport();
         element.viewport('height', 1000);
 
@@ -16,7 +16,7 @@ TestCase("methods", {
         assertEquals(height, element.viewport('height'));
     },
 
-    testWidthMethodChangesContentBoxWidth: function() {
+    testWidthMethodChangesContentFrameWidth: function() {
         var width = 1000;
 
         var element = $('<div></div>').viewport();
@@ -35,7 +35,7 @@ TestCase("methods", {
         assertEquals(width, element.viewport('width'));
     },
 
-    testUpdateMethodUpdatesFrameAfterViewportSizeIsChanged: function() {
+    testAdjustMethodAdjustsBinderFrameAfterViewportSizeIsChanged: function() {
         var content = $('<div class="content"></div>');
         content.height(700);
         content.width(700);
@@ -44,32 +44,64 @@ TestCase("methods", {
         element.height(300);
         element.width(300);
         
-        element.viewport('update');
+        element.viewport('adjust');
 
         var viewportBinder = element.viewport('binder');
-        var viewportContent = element.viewport('content');
 
         element.appendTo(document.body);
 
         assertEquals(1100, viewportBinder.height());
         assertEquals(1100, viewportBinder.width());
+    },
+
+    testAdjustMethodAdjustsContentFramePositionViewportSizeIsChanged: function() {
+        var content = $('<div class="content"></div>');
+        content.height(700);
+        content.width(700);
+
+        var element = $('<div></div>').viewport({content: content});
+        element.height(300);
+        element.width(300);
+
+        element.viewport('adjust');
+
+        var viewportContent = element.viewport('content');
+
+        element.appendTo(document.body);
+
         assertEquals('200px', viewportContent.css('left'));
         assertEquals('200px', viewportContent.css('top'));
     },
 
-    testUpdateMethodChangesBinderBoxIfContentBoxSizeIsChanged: function() {
+    testAdjustMethodAdjustsBinderFrameSizeIfContentFrameSizeIsChanged: function() {
         var element = $('<div></div>').viewport();
 
         element.height(500);
         element.width(500);
 
         element.viewport('size', 1000, 2000);
-        element.viewport('update');
+        element.viewport('adjust');
 
         var viewportBinder = element.viewport('binder');
 
         assertEquals(1500, viewportBinder.height());
         assertEquals(3500, viewportBinder.width());
+    },
+
+    testUpdateMethodUpdatesContentFrameSizeIfContentIsChanged: function() {
+        var content = $('<div></div>').height(1000).width(1000);
+        var element = $('<div></div>').height(500).width(500);
+
+        element.viewport({content: content})
+
+        content.height(700).width(800);
+
+        element.viewport('update');
+
+        var viewportContent = element.viewport('content');
+
+        assertEquals(700, viewportContent.height());
+        assertEquals(800, viewportContent.width());
     },
 
     testUpdateMethodReturnsReferenceToJQueryObject: function() {
@@ -78,7 +110,7 @@ TestCase("methods", {
         assertEquals(element.viewport('update'), element);
     },
 
-    testSizeMethodChangesContentBoxSize: function() {
+    testSizeMethodChangesContentFrameSize: function() {
         var element = $('<div></div>').viewport();
 
         element.viewport('size', 1000, 2000);

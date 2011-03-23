@@ -183,7 +183,7 @@ TestCase("behavior", {
     },
 
     testContentBoxHasCorrectPositionAfterItWasDraggedAndViewportSizeBecomeSmaller: function() {
-        var element = $('<div></div>');
+        var element = $('<div></div>').appendTo(document.body);
         element.height(500);
         element.width(500);
 
@@ -193,19 +193,18 @@ TestCase("behavior", {
 
         element.viewport({content: content});
 
-        content.trigger('dragstart');
-        content.css('left', 50);
-        content.css('top', 50);
-        content.trigger('dragstop', {position: {left: 50, top: 50}});
-
-        element.height(300);
-        element.width(300);
-        element.viewport('update');
-
         var viewportBinder = element.viewport('binder');
         var viewportContent = element.viewport('content');
 
-        element.appendTo(document.body);
+        viewportContent.trigger('dragstart');
+        viewportContent.css('left', 50);
+        viewportContent.css('top', 50);
+        viewportContent.trigger('dragstop', {position: {left: 50, top: 50}});
+
+        element.height(300);
+        element.width(300);
+
+        element.viewport('update');
         
         assertEquals(1100, viewportBinder.height());
         assertEquals(1100, viewportBinder.width());

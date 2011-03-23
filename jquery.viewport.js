@@ -20,12 +20,18 @@ $.widget('ui.viewport', {
         }
 
         this.viewport = createViewport(this.element, this.options);
+        this.viewport.init();
         this.viewport.adjust();
     },
 
     content: function() { return this.viewport.content; },
     binder:  function() { return this.viewport.binder; },
-    update:  function() { this.viewport.adjust(); },
+    adjust: function() { this.viewport.adjust(); },
+
+    update:  function() {
+        this.viewport.init();
+        this.viewport.adjust();
+    },
 
     size: function(height, width) {
         if (height == null || width == null) {
@@ -58,48 +64,53 @@ function createViewport(element, options) {
     element.css({position: 'relative', overflow: 'hidden'});
     content.css({position: 'absolute'});
 
-    if (options.width != false && options.height != false) {
-        content.height(options.height);
-        content.width(options.width);
+    var contents = false;
+    if (options.content == false && element.contents().length) {
+        contents = element.contents().detach();
     } else if (options.content != false) {
-        content.height(options.content.height());
-        content.width(options.content.width());
+        contents = options.content.detach();
     }
 
-    if (options.content != false) {
-        content.append(options.content.detach())
-    } else {
-        content.append(element.contents().detach());
-    }
-
+    content.append(contents);
     binder.append(content);
     element.append(binder);
 
-    var contentOffset = {
-        left: content.offset().left,
-        top: content.offset().top
-    };
-
-    var contentSize = {
-        height: content.height(),
-        width: content.width()
-    };
-
-    var centerHorizontal = true,
+    var contentPosition, contentSize,
+        centerHorizontal = true,
         centerVertical = true,
         heightDiff = 0,
         widthDiff = 0;
 
     element.bind('dragstop', function(event, ui) {
-        if(contentOffset.top != ui.position.top) {
+        if(contentPosition.top != ui.position.top) {
             centerHorizontal = false;
         }
-        if(contentOffset.left != ui.position.left) {
+        if(contentPosition.left != ui.position.left) {
             centerVertical = false;
         }
-        contentOffset.left = ui.position.left;
-        contentOffset.top = ui.position.top;
+        contentPosition.left = ui.position.left;
+        contentPosition.top = ui.position.top;
     });
+
+    function init() {
+        if (options.width != false && options.height != false) {
+            content.height(options.height);
+            content.width(options.width);
+        } else if (contents != false) {
+            content.height(contents.height());
+            content.width(contents.width());
+        }
+
+        contentSize = {
+            height: content.height(),
+            width: content.width()
+        };
+
+        contentPosition = {
+            left: content.position().left,
+            top: content.position().top
+        };
+    }
 
     function adjust() {
         var viewportSize = {
@@ -120,13 +131,13 @@ function createViewport(element, options) {
             binder.css('top', -diff);
 
             if (centerVertical) {
-                contentOffset.top = Math.floor(diff / 2);
-                content.css('top', contentOffset.top);
+                contentPosition.top = Math.floor(diff / 2);
+                content.css('top', contentPosition.top);
             } else {
-                var newTop = contentOffset.top + (diff - heightDiff);
+                var newTop = contentPosition.top + (diff - heightDiff);
                 newTop = newTop >= 0 ? newTop : 0;
+                contentPosition.top = newTop;
                 content.css('top', newTop);
-                contentOffset.top = newTop;
             }
             heightDiff = diff;
         }
@@ -142,13 +153,13 @@ function createViewport(element, options) {
             binder.css('left', -diff);
 
             if (centerHorizontal) {
-                contentOffset.left = Math.floor(diff / 2);
-                content.css('left', contentOffset.left);
+                contentPosition.left = Math.floor(diff / 2);
+                content.css('left', contentPosition.left);
             } else {
-                var newLeft = contentOffset.left + (diff - widthDiff);
+                var newLeft = contentPosition.left + (diff - widthDiff);
                 newLeft = newLeft >= 0 ? newLeft : 0;
+                contentPosition.left = newLeft;
                 content.css('left', newLeft);
-                contentOffset.left = newLeft;
             }
             widthDiff = diff;
         }
@@ -173,6 +184,7 @@ function createViewport(element, options) {
     }
 
     return {
+        init: init,
         adjust: adjust,
         setContentHeight: setContentHeight,
         setContentWidth: setContentWidth,
