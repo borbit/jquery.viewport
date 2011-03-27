@@ -59,5 +59,81 @@ TestCase("options", {
         var viewportContent = element.viewport('content');
 
         assertEquals('50px', viewportContent.css('top'));
+    },
+
+    // $(...).viewport({position: 'left'});
+    testPositionParamContentFramePostionSetToLeft: function() {
+        var element = $('<div></div>').height(100).width(100);
+        var content = $('<div></div>').height(200).width(200);
+
+        element.viewport({content: content, position: 'left'});
+
+        var viewportContent = element.viewport('content');
+
+        assertEquals('100px', viewportContent.css('left'));
+    },
+
+    // $(...).viewport({position: 'right'});
+    testPositionParamContentFramePostionSetToRight: function() {
+        var element = $('<div></div>').height(100).width(100);
+        var content = $('<div></div>').height(200).width(200);
+
+        element.viewport({content: content, position: 'right'});
+
+        var viewportContent = element.viewport('content');
+
+        assertEquals('0px', viewportContent.css('left'));
+    },
+
+    // $(...).viewport({position: 'top left'});
+    testPositionParamContentFramePostionSetToTopLeft: function() {
+        var element = $('<div></div>').height(100).width(100);
+        var content = $('<div></div>').height(200).width(200);
+
+        element.viewport({content: content, position: 'top left'});
+
+        var viewportContent = element.viewport('content');
+
+        assertEquals('100px', viewportContent.css('top'));
+        assertEquals('100px', viewportContent.css('left'));
+    },
+
+    // $(...).viewport({position: 'top right'});
+    testPositionParamContentFramePostionSetToTopRight: function() {
+        var element = $('<div></div>').height(100).width(100);
+        var content = $('<div></div>').height(200).width(200);
+
+        element.viewport({content: content, position: 'top right'});
+
+        var viewportContent = element.viewport('content');
+
+        assertEquals('100px', viewportContent.css('top'));
+        assertEquals('0px', viewportContent.css('left'));
+    },
+
+    // $(...).viewport({position: 'bottom left'});
+    testPositionParamContentFramePostionSetToBottomLeft: function() {
+        var element = $('<div></div>').height(100).width(100);
+        var content = $('<div></div>').height(200).width(200);
+
+        element.viewport({content: content, position: 'bottom left'});
+
+        var viewportContent = element.viewport('content');
+
+        assertEquals('0px', viewportContent.css('top'));
+        assertEquals('100px', viewportContent.css('left'));
+    },
+
+    // $(...).viewport({position: 'bottom right'});
+    testPositionParamContentFramePostionSetToBottomRight: function() {
+        var element = $('<div></div>').height(100).width(100);
+        var content = $('<div></div>').height(200).width(200);
+
+        element.viewport({content: content, position: 'bottom right'});
+
+        var viewportContent = element.viewport('content');
+
+        assertEquals('0px', viewportContent.css('top'));
+        assertEquals('0px', viewportContent.css('left'));
     }
 });

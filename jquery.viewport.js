@@ -102,12 +102,22 @@ function createViewport(element, options) {
     }
 
     function updateContentPosition() {
-        if (options.position.indexOf('bottom') != -1) {
+        var position = options.position.split(' ');
+
+        if (position.indexOf('bottom') != -1) {
             centerVertical = false;
             contentPosition.top = viewportSize.height - contentSize.height;
-        } else if (options.position.indexOf('top') != -1) {
+        } else if (position.indexOf('top') != -1) {
             centerVertical = false;
             contentPosition.top = 0;
+        }
+
+        if (position.indexOf('right') != -1) {
+            centerHorizontal = false;
+            contentPosition.left = viewportSize.width - contentSize.width;
+        } else if (position.indexOf('left') != -1) {
+            centerHorizontal = false;
+            contentPosition.left = 0;
         }
     }
 
