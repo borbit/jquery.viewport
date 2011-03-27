@@ -10,8 +10,6 @@
 <body>
 <div id="page">
     <h1>jQuery.Viewport</h1>
-
-    <a href="https://github.com/borbit/jquery.viewport" id="forkme">Fork me on GitHub</a>
     
     <p>
         Very helpfull, simple and lightweight
@@ -21,9 +19,7 @@
         game. You can see it in action right there:
     </p>
     
-    <div id="viewport">
-        <img src="http://borbit.org/img/dragme.gif" id="image" width="800" height="800" />
-    </div>
+    <div id="viewport"><img src="http://borbit.org/img/dragme.gif" width="800" height="800" /></div>
 
     <p>
         There are two additional plugins are used in this example: 
@@ -48,9 +44,7 @@
 <div class="code">
 <div class="hint">HTML</div>
 <pre>
-&lt;div id="element"&gt;
-    &lt;img src="http://borbit.org/img/dragme.gif" id="image" /&gt;
-&lt;/div&gt;
+&lt;div id="element"&gt;&lt;img src="/img/dragme.gif" /&gt;&lt;/div&gt;
 </pre>
 </div>
 
@@ -68,13 +62,13 @@ $(function() {
 </pre>
 </div>
 
-    <h2>Downloads (0.1.0)</h2>
+    <h2>Downloads (0.2.0)</h2>
     <p style="margin-bottom:10px;">
         The compressed version is compressed by <a href="http://closure-compiler.appspot.com/">Google Closure Compiler</a>
         with simple optimization mode. To download a file just right-click and use "Save As...".
     </p>
-    <a  href="https://github.com/borbit/jquery.viewport/raw/master/jquery.viewport.js">Compressed Version <i>(2.4 kb)</i></a><br/>
-    <a href="https://github.com/borbit/jquery.viewport/raw/master/jquery.viewport.min.js">Uncompressed Version <i>(6 kb)</i></a>
+    <a  href="https://github.com/borbit/jquery.viewport/raw/0.2.0/jquery.viewport.min.js">Compressed Version <i>(2.4 kb)</i></a><br/>
+    <a href="https://github.com/borbit/jquery.viewport/raw/0.2.0/jquery.viewport.js">Uncompressed Version <i>(6 kb)</i></a>
 
     <h2>Documentation</h2>
 
@@ -92,13 +86,10 @@ $(function() {
     <div id="xRayIfBigger">
         <span>Binder frame</span>
         <div class="binderFrame">
-
             <span>Content frame</span>
             <div class="contentFrame">
-
                 <span>Viewport frame</span>
-                <div class="viewportFrame">
-                </div>
+                <div class="viewportFrame"></div>
             </div>
         </div>
     </div>
@@ -110,7 +101,7 @@ $(function() {
     <p>
 
     <div id="xRayIfSmaller">
-        <span>Viewport frame</span>
+        <span class="viewportTitle">Viewport frame</span>
         <div class="viewportFrame">
             <span class="binderTitle">Binder frame</span>
             <span class="contentTitle">Content frame</span>
@@ -146,6 +137,16 @@ $(function() {
     <p class="desc">
         Width of the content frame. Works in the same way as <code>'height'</code>
         option and also doesn't work if <code>'height'</code> option isn't set.
+    </p>
+
+    <span class="subj">position</span>
+    <i>Default:</i> <code>'center'</code>
+
+    <p class="desc">
+        Starting position of the content frame in relation to the viewport frame.
+        Possible values: <code>'center'</code>, <code>'top'</code>, <code>'bottom'</code>,
+        <code>'left'</code>, <code>'right'</code>. Also you can combine values:
+        <code>'top left'</code>, <code>'top right'</code>, <code>'bottom left'</code> etc...
     </p>
 
     <span class="subj">contentClass</span>
@@ -215,22 +216,24 @@ $(function() {
 
     <h2>Changelog</h2>
 
-    <h3>0.1.0</h3>
+    <h3 style="margin:15px 0 10px 0;">0.2.0</h3>
     <p>
-        Initial release of jquery.viewport
-    </p>
+        Added new option <code>position</code> to set the starting position of the
+        content frame in relation to the viewport frame.</p>
+    
+    <h3 style="margin:15px 0 10px 0;">0.1.0</h3>
+    <p>Initial release of jquery.viewport</p>
 
     <h2>Credits</h2>
 
     <p>
-        <a href="https://developer.mozilla.org/en/JavaScript/Guide" title="Learn JavaScript JS" style="float:right;background:none;margin-top:-15px;">
+        <a href="https://developer.mozilla.org/en/JavaScript/Guide" title="Learn JavaScript JS" style="float:right;background:none;margin-top:-50px;">
             <img src='http://static.jsconf.us/promotejsh.gif' height='150' width='180' alt='JavaScript Array constructor'/>
         </a>
-        <h3>Serge Borbit</h3>
         <a href="mailto:serge.borbit@gmail.com">serge.borbit@gmail.com</a><br/>
-        <a href="https://github.com/borbit/">https://github.com/borbit/</a><br/>
-        <a href="https://github.com/borbit/">http://linkedin.com/pub/serge-borbit/14/800/813</a><br/>
-        <a href="https://github.com/borbit/">http://www.facebook.com/serge.borbit/</a>
+        <a href="https://github.com/borbit/jquery.viewport/">https://github.com/borbit/jquery.viewport/</a><br/>
+        <a href="http://linkedin.com/pub/serge-borbit/14/800/813">http://linkedin.com/pub/serge-borbit/14/800/813</a><br/>
+        <a href="http://www.facebook.com/serge.borbit/">http://www.facebook.com/serge.borbit/</a>
     </p>
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
@@ -242,9 +245,7 @@ $(function() {
         $(function() {
             var element = $('#viewport');
 
-            element.viewport({
-                content: $('#image')
-            });
+            element.viewport();
 
             var content = element.viewport('content');
 

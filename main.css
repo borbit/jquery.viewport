@@ -1,7 +1,7 @@
 body {
-    font-family: "Palatino Linotype", "Book Antiqua", Palatino, FreeSerif, serif;
-    font-size: 16px;
     line-height:24px;
+    font-size:14px;
+    font-family:"Georgia", "Times New Roman", Times, serif;
 }
 
 h1, h2, h3 {
@@ -12,12 +12,12 @@ h1, h2, h3 {
 }
 
 h2 {
-    margin-top:30px;
+    margin-top:40px;
     font-size:1.5em;
 }
 
 h3 {
-    margin-top:20px;
+    margin-top:30px;
     margin-bottom:10px;
     font-size:1.1em;
 }
@@ -27,32 +27,12 @@ p {
 }
 
 a {
-    color:#0c5aa6;
     font-weight:bold;
-    text-decoration:none;
+    color:#000;
 }
 
 a:hover {
-    color:#408ad2;
-}
-
-#forkme {
-    position:absolute;
-    display:block;
-    top:-5px;
-    right:0px;
-    padding-right:40px;
-    height:40px;
-    line-height:40px;
-    background:#fff url(http://borbit.org/img/githublogo.png) no-repeat top right;
-    color:#a60000;
-    font-family:Helvetica, Arial;
-    font-weight:bold;
-    font-size:14px;
-}
-
-#forkme:hover {
-    color:#dc3b33;
+    color:#777;
 }
 
 #page {
@@ -64,9 +44,10 @@ a:hover {
 #viewport {
     position:relative;
     overflow:hidden;
-    margin:20px 0;
-    height:300px;
-    width:600px;
+    margin:30px auto;
+    height:250px;
+    width:580px;
+    
     -webkit-box-shadow:0 0 100px #777;
     -moz-box-shadow:0 0 100px #777;
     box-shadow:0 0 100px #777;
@@ -79,13 +60,24 @@ a:hover {
 .code {
     position:relative;
     margin-bottom:15px;
-    padding:8px 0 8px 12px;
+    padding:10px;
     line-height:18px;
-    border:1px solid #ffe773;
-    border-left:4px solid #ffd300;
+    border:1px solid #aaa;
+    background:#f9f9f9;
+
+    -webkit-box-shadow:0 0 5px #eee;
+    -moz-box-shadow:0 0 5px #eee;
+    box-shadow:0 0 5px #eee;
+
+    -webkit-border-radius:3px;
+    -moz-border-radius:3px;
+    border-radius:3px;
 }
 
-.code pre {
+.code pre,
+.code .hint,
+#xRayIfBigger span,
+#xRayIfSmaller span {
     font-family:Monaco, Consolas, "Lucida Console", monospace;
     font-size:12px;
 }
@@ -93,16 +85,14 @@ a:hover {
 .code .hint {
     position:absolute;
     top:0;
-    right:0;
-    padding:2px 5px;
-    background:#ffd300;
-    font-family:Monaco, Consolas, "Lucida Console", monospace;
-    font-size:12px;
-    color:#fff;
+    right:3px;
+    font-size:9px;
+    color:#aaa;
 }
 
 code {
-    padding:0px 5px;
+    padding:2px 5px;
+    background:#f1f1f1;
     font-family:Monaco, Consolas, "Lucida Console", monospace;
     font-size:12px;
 }
@@ -120,7 +110,7 @@ code {
 
 .desc {
     clear:both;
-    margin:5px 0 25px 0;
+    margin:5px 0 40px 0;
 }
 
 #xRayIfBigger {
@@ -132,9 +122,9 @@ code {
     float:left;
     display:block;
     padding:0 5px;
-    line-height:18px;
+    line-height:16px;
     background:#000;
-    font-size:10pt;
+    font-size:10px;
     color:#fff;
 }
 
@@ -142,49 +132,51 @@ code {
     clear:both;
     padding:30px;
     height:290px;
-    border:1px solid #000;
+    border:1px dotted #000;
 }
 
 #xRayIfBigger .contentFrame {
     clear:both;
     padding:30px;
     height:190px;
-    border:1px solid #000;
+    border:1px dotted #000;
     background:url(http://borbit.org/img/dragme.gif) no-repeat left top;
 }
 
 #xRayIfBigger .contentFrame span {
-    background:#00a;
+    background:#777;
 }
 
 #xRayIfBigger .viewportFrame {
     clear:both;
     padding:30px;
     height:90px;
-    border:2px solid #00a;
+    border:2px solid #777;
 }
 
 #xRayIfSmaller .viewportFrame {
     clear:both;
     padding:30px;
     height:240px;
-    border:2px solid #000;
+    border:2px solid #777;
 }
 
 #xRayIfSmaller .contentFrame {
     clear:both;
     height:200px;
-    border:1px solid #00a;
+    border:1px dotted #000;
     background:url(http://borbit.org/img/dragme.gif) no-repeat left top;
 }
 
 #xRayIfSmaller .binderFrame {
     clear:both;
     height:202px;
-    border:1px solid #000;
+    border:1px dotted #000;
 }
 
+#xRayIfSmaller .viewportTitle {
+    background:#777;
+}
 #xRayIfSmaller .contentTitle {
     margin-left:10px;
-    background:#00a;
 }
