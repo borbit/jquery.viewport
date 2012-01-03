@@ -21,7 +21,6 @@ $.widget('ui.viewport', {
         }
 
         this.viewport = createViewport(this.element, this.options);
-        this.viewport.init();
         this.viewport.adjust();
     },
 
@@ -58,6 +57,14 @@ $.widget('ui.viewport', {
 });
 
 function createViewport(element, options) {
+    var contentPosition = {top: 0, left: 0}
+      , contentSize = {height: 0, width: 0}
+      , viewportSize = {height: 0, width: 0}
+      , centerHorizontal = true
+      , centerVertical = true
+      , heightDiff = 0
+      , widthDiff = 0;
+    
     var binder = $('<div class="' + options.binderClass + '"></div>');
     var content = $('<div class="' + options.contentClass + '"></div>');
 
@@ -66,24 +73,22 @@ function createViewport(element, options) {
     content.css({position: 'absolute'});
 
     var contents = false;
-    if (options.content == false && element.contents().length) {
-        contents = element.children().detach();
+    if (options.content == false && element.children().length) {
+        contents = element.children();
     } else if (options.content != false) {
-        contents = options.content.detach();
+        contents = options.content;
     }
-
-    content.append(contents);
+    
+    updateContentSize();
+    updateContentPosition();
+    
+    if (contents) {
+        contents.detach();
+        content.append(contents);
+    }
+    
     binder.append(content);
     element.append(binder);
-
-    var centerHorizontal = true,
-        centerVertical = true,
-        heightDiff = 0,
-        widthDiff = 0;
-
-    var contentPosition = {top: 0, left: 0};
-    var contentSize = {height: 0, width: 0};
-    var viewportSize = {height: 0, width: 0};
 
     element.bind('dragstop', function(event, ui) {
         if(contentPosition.top != ui.position.top) {
@@ -95,11 +100,6 @@ function createViewport(element, options) {
         contentPosition.left = ui.position.left;
         contentPosition.top = ui.position.top;
     });
-
-    function init() {
-        updateContentSize();
-        updateContentPosition();
-    }
 
     function updateContentPosition() {
         var position = options.position.split(' ');
@@ -206,7 +206,6 @@ function createViewport(element, options) {
     }
 
     return {
-        init: init,
         adjust: adjust,
         updateContentSize: updateContentSize,
         setContentHeight: setContentHeight,

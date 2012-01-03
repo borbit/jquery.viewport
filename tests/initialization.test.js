@@ -12,7 +12,6 @@ test('viewport el has overflow property set to hidden', function() {
     equal(element.css('overflow'), 'hidden');
 });
 
-
 test('viewport el has position property set to relative', function() {
     var element = $('<div/>').viewport();
 
@@ -29,22 +28,21 @@ test('viewport el has correct DOM structure', function() {
     equal(content.length, 1);
 })
 
-test('binder el has position property set to absolute', function() {
+test('binder frame has position property set to absolute', function() {
     var element = $('<div/>').viewport();
     var binder = element.viewport('binder');
 
     equal(binder.css('position'), 'absolute');
 });
 
-test('viewport content has position property set to absolute', function() {
+test('content frame has position property set to absolute', function() {
     var element = $('<div/>').viewport();
     var content = element.viewport('content');
 
     equal(content.css('position'), 'absolute');
 });
 
-
-test('viewport content has the same size as element passed through option content', function() {
+test('content frame has the same size as element passed through "content" option', function() {
     var content = $('<div class="content"></div>');
     content.height(100);
     content.width(200);
@@ -56,7 +54,45 @@ test('viewport content has the same size as element passed through option conten
     equal(viewportContent.width(), 200);
 });
 
-test('binder has the same size as a content if content is smaller then viewport', function() {
+test('content frame has the same size as an initial content (static size)', function() {
+    var element = $('<div><div style="height:100px;width:200px;"></div>').viewport();
+    var viewportContent = element.viewport('content');
+
+    equal(viewportContent.height(), 100);
+    equal(viewportContent.width(), 200);
+});
+
+test('content frame has the same size as an initial content (inherited size)', function() {
+    var element = $('<div style="height:100px;width:200px;">\
+        <div style="height:inherit;width:inherit;"></div>');
+    
+    element.appendTo(document.body);
+    element.viewport();
+    
+    var viewportContent = element.viewport('content');
+
+    equal(viewportContent.height(), 100);
+    equal(viewportContent.width(), 200);
+    
+    element.remove();
+});
+
+test('content frame has the same size as an initial content (100% size)', function() {
+    var element = $('<div style="height:100px;width:200px;">\
+        <div style="height:100%;width:100%;"></div>');
+        
+    element.appendTo(document.body);
+    element.viewport();
+    
+    var viewportContent = element.viewport('content');
+
+    equal(viewportContent.height(), 100);
+    equal(viewportContent.width(), 200);
+    
+    element.remove();
+});
+
+test('binder frame has the same size as a content if content is smaller then viewport', function() {
     var element = $('<div/>');
     element.height(500);
     element.width(500);
@@ -72,8 +108,7 @@ test('binder has the same size as a content if content is smaller then viewport'
     equal(binder.width(), 200);
 });
 
-
-test('binder is in the center if content is smaller then viewport', function() {
+test('binder frame is in the center if content  is smaller then viewport', function() {
     var element = $('<div/>');
     element.height(500);
     element.width(500);
@@ -93,7 +128,7 @@ test('binder is in the center if content is smaller then viewport', function() {
     element.remove();
 });
 
-test('content has left and top properties set to 0 if it is smaller then viewport', function() {
+test('content frame has left and top properties set to 0 if it is smaller then viewport', function() {
     var element = $('<div/>');
     element.height(500);
     element.width(500);
@@ -114,7 +149,7 @@ test('content has left and top properties set to 0 if it is smaller then viewpor
     element.remove();
 });
 
-test('binder has correct size if content is bigger then viewport', function() {
+test('binder frame has correct size if content is bigger then viewport', function() {
     var element = $('<div/>');
     element.height(500);
     element.width(500);
@@ -130,7 +165,7 @@ test('binder has correct size if content is bigger then viewport', function() {
     equal(viewportBinder.width(), 1100);
 });
 
-test('binder is in the center if content box is bigger then viewport box', function() {
+test('binder frame is in the center if content is bigger then viewport', function() {
     var element = $('<div/>');
     element.height(500);
     element.width(500);
@@ -150,7 +185,7 @@ test('binder is in the center if content box is bigger then viewport box', funct
     element.remove();
 });
 
-test('content has correct left and top properties if it is bigger then viewport', function() {
+test('content frame has correct left and top properties if it is bigger then viewport', function() {
     var element = $('<div/>');
     element.height(500);
     element.width(500);
