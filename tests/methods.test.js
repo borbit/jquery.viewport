@@ -1,154 +1,228 @@
-TestCase("methods", {
-    testHeightMethodChangesContentFrameHeight: function() {
-        var element = $('<div></div>').viewport();
-        element.viewport('height', 1000);
+module('"height" method');
 
-        var viewportContent = element.viewport('content');
+test('changes content frame\'s height', function() {
+    var element = $('<div/>').viewport();
+    var content = element.viewport('content');
+    
+    element.viewport('height', 1000);
 
-        assertEquals(1000, viewportContent.height());
-    },
+    equal(content.height(), 1000);
+});
 
-    testHeightMethodIsCalledWithoutParamReturnsHeight: function() {
-        var height = 100;
+test('returns content frame\'s height when is called without param', function() {
+    var height = 100;
+    var element = $('<div/>').viewport({height: height, width: 200});
 
-        var element = $('<div></div>').viewport({height: height, width: 200});
+    equal(element.viewport('height'), height);
+});
 
-        assertEquals(height, element.viewport('height'));
-    },
+module('"width" method');
 
-    testWidthMethodChangesContentFrameWidth: function() {
-        var width = 1000;
+test('changes content frame\'s width', function() {
+    var width = 1000;
+    var element = $('<div/>').viewport();
+    var viewportContent = element.viewport('content');
+    
+    element.viewport('width', width);
 
-        var element = $('<div></div>').viewport();
-        element.viewport('width', width);
+    equal(viewportContent.width(), width);
+});
 
-        var viewportContent = element.viewport('content');
+test('returns content frame\'s width when is called without param', function() {
+    var width = 100;
+    var element = $('<div/>').viewport({width: width, height: 200});
 
-        assertEquals(width, viewportContent.width());
-    },
+    equal(element.viewport('width'), width);
+});
 
-    testWidthMethodIsCalledWithoutParamReturnsWidth: function() {
-        var width = 100;
+module('"adjust" method');
 
-        var element = $('<div></div>').viewport({width: width, height: 200});
+test('adjusts binder frame after viewport size is changed', function() {
+    var content = $('<div class="content"></div>');
+    content.height(700);
+    content.width(700);
 
-        assertEquals(width, element.viewport('width'));
-    },
+    var element = $('<div/>').viewport({content: content});
+    var viewportBinder = element.viewport('binder');
+    element.height(300);
+    element.width(300);
+    
+    element.viewport('adjust');
+    element.appendTo(document.body);
+    
+    equal(viewportBinder.height(), 1100);
+    equal(viewportBinder.width(), 1100);
+    
+    element.remove();
+});
 
-    testAdjustMethodAdjustsBinderFrameAfterViewportSizeIsChanged: function() {
-        var content = $('<div class="content"></div>');
-        content.height(700);
-        content.width(700);
+test('adjusts content frame position after viewport size is changed', function() {
+    var content = $('<div class="content"></div>');
+    content.height(700);
+    content.width(700);
 
-        var element = $('<div></div>').viewport({content: content});
-        element.height(300);
-        element.width(300);
-        
-        element.viewport('adjust');
+    var element = $('<div/>').viewport({content: content});
+    var viewportContent = element.viewport('content');
+    element.height(300);
+    element.width(300);
 
-        var viewportBinder = element.viewport('binder');
+    element.viewport('adjust');
+    element.appendTo(document.body);
 
-        element.appendTo(document.body);
+    equal(viewportContent.css('left'), '200px');
+    equal(viewportContent.css('top'), '200px');
+    
+    element.remove();
+});
 
-        assertEquals(1100, viewportBinder.height());
-        assertEquals(1100, viewportBinder.width());
-    },
+test('adjusts binder frame\'s size after content size is changed', function() {
+    var element = $('<div/>').viewport();
+    var viewportBinder = element.viewport('binder');
+    element.height(500);
+    element.width(500);
 
-    testAdjustMethodAdjustsContentFramePositionViewportSizeIsChanged: function() {
-        var content = $('<div class="content"></div>');
-        content.height(700);
-        content.width(700);
+    element.viewport('size', 1000, 2000);
+    element.viewport('adjust');
 
-        var element = $('<div></div>').viewport({content: content});
-        element.height(300);
-        element.width(300);
+    equal(viewportBinder.height(), 1500);
+    equal(viewportBinder.width(), 3500);
+});
 
-        element.viewport('adjust');
+module('"update" method');
 
-        var viewportContent = element.viewport('content');
+test('updates content frame size after content size is changed', function() {
+    var content = $('<div/>').height(1000).width(1000);
+    var element = $('<div/>').height(500).width(500);
 
-        element.appendTo(document.body);
+    element.viewport({content: content})
 
-        assertEquals('200px', viewportContent.css('left'));
-        assertEquals('200px', viewportContent.css('top'));
-    },
+    content.height(700).width(800);
 
-    testAdjustMethodAdjustsBinderFrameSizeIfContentFrameSizeIsChanged: function() {
-        var element = $('<div></div>').viewport();
+    element.viewport('update');
 
-        element.height(500);
-        element.width(500);
+    var viewportContent = element.viewport('content');
 
-        element.viewport('size', 1000, 2000);
-        element.viewport('adjust');
+    equal(viewportContent.height(), 700);
+    equal(viewportContent.width(), 800);
+});
 
-        var viewportBinder = element.viewport('binder');
+test('returns reference to jQuery object', function() {
+    var element = $('<div/>').viewport();
 
-        assertEquals(1500, viewportBinder.height());
-        assertEquals(3500, viewportBinder.width());
-    },
+    equal(element.viewport('update'), element);
+});
 
-    testUpdateMethodUpdatesContentFrameSizeIfContentIsChanged: function() {
-        var content = $('<div></div>').height(1000).width(1000);
-        var element = $('<div></div>').height(500).width(500);
+test('updates content frame\'s position after it was dragged and viewport size become smaller', function() {
+    var element = $('<div/>');
+    element.height(500);
+    element.width(500);
 
-        element.viewport({content: content})
+    var content = $('<div/>');
+    content.height(700);
+    content.width(700);
+    
+    element.viewport({content: content});
 
-        content.height(700).width(800);
+    var viewportBinder = element.viewport('binder');
+    var viewportContent = element.viewport('content');
 
-        element.viewport('update');
+    viewportContent.trigger('dragstart');
+    viewportContent.css('left', 50);
+    viewportContent.css('top', 50);
+    viewportContent.trigger('dragstop', {position: {left: 50, top: 50}});
 
-        var viewportContent = element.viewport('content');
+    element.height(300);
+    element.width(300);
 
-        assertEquals(700, viewportContent.height());
-        assertEquals(800, viewportContent.width());
-    },
+    element.viewport('update');
+    
+    element.appendTo(document.body);
+    
+    equal(viewportBinder.height(), 1100);
+    equal(viewportBinder.width(), 1100);
+    equal(viewportContent.css('left'), '250px');
+    equal(viewportContent.css('top'), '250px');
+    
+    element.remove();
+});
 
-    testUpdateMethodReturnsReferenceToJQueryObject: function() {
-        var element = $('<div></div>').viewport();
+test('updates content frame\'s position after it was dragged and viewport size become bigger', function() {
+    var content = $('<div/>');
+    content.height(700);
+    content.width(700);
 
-        assertEquals(element.viewport('update'), element);
-    },
+    var element = $('<div/>');
+    element.height(500);
+    element.width(500);
 
-    testSizeMethodChangesContentFrameSize: function() {
-        var element = $('<div></div>').viewport();
+    element.viewport({content: content});
 
-        element.viewport('size', 1000, 2000);
-        var viewportContent = element.viewport('content');
+    content.trigger('dragstart');
+    content.css('left', 50);
+    content.css('top', 50);
+    content.trigger('dragstop', {position: {left: 50, top: 50}});
 
-        assertEquals(1000, viewportContent.height());
-        assertEquals(2000, viewportContent.width());
-    },
+    element.height(650);
+    element.width(650);
+    
+    element.viewport('update');
 
-    testSizeMethodIsCalledWithoutParamsReturnsWidthAndHeight: function() {
-        var height = 100;
-        var width = 200;
+    var viewportBinder = element.viewport('binder');
+    var viewportContent = element.viewport('content');
 
-        var element = $('<div></div>').viewport();
+    element.appendTo(document.body);
 
-        element.viewport('size', height, width);
+    equal(viewportBinder.height(), 750);
+    equal(viewportBinder.width(), 750);
+    equal(viewportContent.css('left'), '0px');
+    equal(viewportContent.css('top'), '0px');
+    
+    element.remove();
+});
 
-        var size = element.viewport('size');
+module('"size" method');
 
-        assertEquals(height, size.height);
-        assertEquals(width, size.width);
-    },
+test('changes content frame\'s size', function() {
+    var element = $('<div/>').viewport();
+    var viewportContent = element.viewport('content');
+    
+    element.viewport('size', 1000, 2000);
 
-    testSizeMethodReturnsReferenceToJQueryObject: function() {
-        var element = $('<div></div>').viewport();
+    equal(viewportContent.height(), 1000);
+    equal(viewportContent.width(), 2000);
+});
 
-        assertEquals(element, element.viewport('size', 1000, 2000));
-    },
+test('returns width and height of the content frame when is called without params', function() {
+    var height = 100;
+    var width = 200;
+    var element = $('<div/>').viewport();
 
-    testContentMethodReturnsJQueryObjectWithContentElement: function() {
-        var element = $('<div></div>').viewport();
+    element.viewport('size', height, width);
 
-        assertTrue(element.viewport('content').hasClass(element.viewport('option', 'contentClass')));
-    },
+    var size = element.viewport('size');
 
-    testBinderMethodReturnsJQueryObjectWithBinderElement: function() {
-        var element = $('<div></div>').viewport();
-        
-        assertTrue(element.viewport('binder').hasClass(element.viewport('option', 'binderClass')));
-    }
+    equal(size.height, height);
+    equal(size.width, width);
+});
+
+test('returns reference to jQuery object of the viewport', function() {
+    var element = $('<div/>').viewport();
+
+    equal(element, element.viewport('size', 1000, 2000));
+});
+
+module('"content" method');
+
+test('returns jQuery object of the content frame', function() {
+    var element = $('<div/>').viewport();
+
+    ok(element.viewport('content').hasClass('viewportContent'));
+});
+
+module('"binder" method');
+
+test('returns jQuery object of the binder frame', function() {
+    var element = $('<div></div>').viewport();
+    
+    ok(element.viewport('binder').hasClass('viewportBinder'));
 });

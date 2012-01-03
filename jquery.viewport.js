@@ -67,7 +67,7 @@ function createViewport(element, options) {
 
     var contents = false;
     if (options.content == false && element.contents().length) {
-        contents = element.contents().detach();
+        contents = element.children().detach();
     } else if (options.content != false) {
         contents = options.content.detach();
     }

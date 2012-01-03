@@ -1,60 +1,61 @@
-TestCase("content", {
-    // $(...).viewport({content: jQueryObject});
-    testPassingThroughOptionContentAsJQueryObject: function() {
-        var content = $('<div class="content"></div>');
-        var element = $('<div></div>').viewport({content: content});
-        var viewportContent = element.viewport('content');
+module('content');
 
-        assertEquals(1, viewportContent.find('.content').length);
-    },
+// $(...).viewport({content: jQueryObject});
+test('passed through "content" option as a jQuery object', function() {
+    var content = $('<div class="content"></div>');
+    var element = $('<div/>').viewport({content: content});
+    var viewportContent = element.viewport('content');
 
-    // $('<div><div class="content"></div></div>').viewport();
-    testInitiallContentPassedIfParamIsNotSet: function() {
-        var element = $('<div><div class="content"></div></div>').viewport();
-        var viewportContent = element.viewport('content');
+    equal(viewportContent.find('.content').length, 1);
+});
 
-        assertEquals(1, viewportContent.find('.content').length);
-    },
+// $('<div><div class="content"></div></div>').viewport();
+test('initial content is used if "content" option is not passed', function() {
+    var element = $('<div><div class="content"></div></div>').viewport();
+    var viewportContent = element.viewport('content');
 
-    // $('<div><div class="content"></div></div>').viewport();
-    testInitiallContentMovedIfContentParamIsNotSet: function() {
-        var element = $('<div><div class="content">asdasd</div></div>').viewport();
-        var viewportContent = element.viewport('content');
+    equal(viewportContent.find('.content').length, 1);
+});
 
-        assertEquals(1, viewportContent.find('.content').length);
-        assertEquals(0, element.children('.content').length);        
-    },
+// $('<div><div class="content">asdasd</div></div>').viewport();
+test('initial content is moved to the content frame', function() {
+    var element = $('<div><div class="content">asdasd</div></div>').viewport();
+    var viewportContent = element.viewport('content');
 
-    // $('<div><div class="cont"></div><div class="cont"></div></div>').viewport();
-    testInitiallContentThatAreSeveralElementsAreMovedIfContentParamIsNotSet: function() {
-        /*:DOC html = <div><div class="content_1"></div>
-                           <div class="content_2"></div>
-                           <div class="content_3"></div>
-                           <div class="content_4"></div>
-                           <div class="content_5"></div>
-                      </div>
-        */
+    equal(viewportContent.find('.content').length, 1);
+    equal(element.children('.content').length, 0);
+});
 
-        var element = $(this.html).viewport();
-        var viewportContent = element.viewport('content');
+// $('<div><div class="cont"></div><div class="cont"></div></div>').viewport();
+test('initial content that are several elements is moved to the content frame', function() {
+    var html = 
+        '<div>\
+            <div class="content_1"></div>\
+            <div class="content_2"></div>\
+            <div class="content_3"></div>\
+            <div class="content_4"></div>\
+            <div class="content_5"></div>\
+        </div>';
 
-        assertEquals(5, viewportContent.children().length);
-        assertEquals(1, element.children().length);
-    },
+    var element = $(html).viewport();
+    var viewportContent = element.viewport('content');
+    
+    equal(viewportContent.children().length, 5);
+    equal(element.children().length, 1);
+});
 
-    // $(...).viewport({content: ArrayOfDOMElements});
-    testPassingThroughContentOptionAsArrayOfDOMElements: function() {
-        var content = [
-            document.createElement('div'),
-            document.createElement('div'),
-            document.createElement('div'),
-            document.createElement('div'),
-            document.createElement('div')
-        ];
+// $(...).viewport({content: ArrayOfDOMElements});
+test('passed through "content" option as an array of DOM elements', function() {
+    var content = [
+        document.createElement('div'),
+        document.createElement('div'),
+        document.createElement('div'),
+        document.createElement('div'),
+        document.createElement('div')
+    ];
 
-        var element = $('<div></div>').viewport({content: content});
-        var viewportContent = element.viewport('content');
+    var element = $('<div/>').viewport({content: content});
+    var viewportContent = element.viewport('content');
 
-        assertEquals(5, viewportContent.children().length);
-    }
-})
+    equal(viewportContent.children().length, 5);
+});
