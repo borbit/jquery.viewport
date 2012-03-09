@@ -1,22 +1,30 @@
+/*    
+    jQuery.Viewport 0.2.1
+    
+    Makes an element as a handy viewport for displaying content
+    with absolute position. For all details and documentation:
+    http://borbit.github.com/jquery.viewport/
+    
+    Copyright (c) 2011-2012 Serge Borbit <serge.borbit@gmail.com>
+    
+    Licensed under the MIT license
+*/
 (function($) {
 
 $.widget('ui.viewport', {
     options:{
-        binderClass: 'viewportBinder',
-        contentClass: 'viewportContent',
-        position: 'center',
-        content: false,
-        height: false,
-        width: false
+        binderClass: 'viewportBinder'
+      , contentClass: 'viewportContent'
+      , position: 'center'
+      , content: false
+      , height: false
+      , width: false
     },
 
     _create: function() {
         var content = this.options.content;
-        var isObject = typeof(content) == 'object';
 
-        if (isObject && content.tagName != null) {
-            this.options.content = $(content);
-        } else if (isObject && $.isArray(content)) {
+        if (content.tagName != null || $.isArray(content)) {
             this.options.content = $(content);
         }
 
@@ -24,18 +32,26 @@ $.widget('ui.viewport', {
         this.viewport.adjust();
     },
 
-    content: function() { return this.viewport.content; },
-    binder:  function() { return this.viewport.binder; },
-    adjust: function() { this.viewport.adjust(); },
-
-    update:  function() {
+    update: function() {
         this.viewport.updateContentSize();
         this.viewport.adjust();
+    },
+    
+    adjust: function() {
+        this.viewport.adjust();
+    },
+    
+    content: function() {
+        return this.viewport.content;
+    },
+    
+    binder: function() {
+        return this.viewport.binder;
     },
 
     size: function(height, width) {
         if (height == null || width == null) {
-            return this.viewport.getContentSize();
+            return this.viewport.contentSize;
         }
         this.viewport.setContentHeight(height);
         this.viewport.setContentWidth(width);
@@ -43,39 +59,43 @@ $.widget('ui.viewport', {
 
     height: function(height) {
         if (height == null) {
-            return this.viewport.getContentSize().height;
+            return this.viewport.contentSize.height;
         }
         this.viewport.setContentHeight(height);
     },
 
     width: function(width) {
         if (width == null) {
-            return this.viewport.getContentSize().width;
+            return this.viewport.contentSize.width;
         }
         this.viewport.setContentWidth(width);
     }
 });
 
+var BINDER_CSS = {position: 'absolute', overflow: 'hidden'}
+  , ELEMENT_CSS = {position: 'relative', overflow: 'hidden'}
+  , CONTENT_CSS = {position: 'absolute'};
+
 function createViewport(element, options) {
     var contentPosition = {top: 0, left: 0}
-      , contentSize = {height: 0, width: 0}
       , viewportSize = {height: 0, width: 0}
-      , centerHorizontal = true
-      , centerVertical = true
-      , heightDiff = 0
-      , widthDiff = 0;
+      , contentSize = {height: 0, width: 0}
+      , centerH = true
+      , centerV = true
+      , diffH = 0
+      , diffW = 0;
     
-    var binder = $('<div class="' + options.binderClass + '"></div>');
-    var content = $('<div class="' + options.contentClass + '"></div>');
+    var binder = $('<div/>').addClass(options.binderClass);
+    var content = $('<div/>').addClass(options.contentClass);
 
-    binder.css({position: 'absolute', overflow: 'hidden'});
-    element.css({position: 'relative', overflow: 'hidden'});
-    content.css({position: 'absolute'});
+    element.css(ELEMENT_CSS);
+    content.css(CONTENT_CSS);
+    binder.css(BINDER_CSS);
 
     var contents = false;
-    if (options.content == false && element.children().length) {
+    if (!options.content && element.children().length) {
         contents = element.children();
-    } else if (options.content != false) {
+    } else if (options.content) {
         contents = options.content;
     }
     
@@ -87,15 +107,14 @@ function createViewport(element, options) {
         content.append(contents);
     }
     
-    binder.append(content);
-    element.append(binder);
+    binder.append(content).appendTo(element);
 
     element.bind('dragstop', function(event, ui) {
-        if(contentPosition.top != ui.position.top) {
-            centerHorizontal = false;
+        if (contentPosition.top != ui.position.top) {
+            centerH = false;
         }
-        if(contentPosition.left != ui.position.left) {
-            centerVertical = false;
+        if (contentPosition.left != ui.position.left) {
+            centerV = false;
         }
         contentPosition.left = ui.position.left;
         contentPosition.top = ui.position.top;
@@ -104,115 +123,107 @@ function createViewport(element, options) {
     function updateContentPosition() {
         var position = options.position.split(' ');
 
-        if (position.indexOf('bottom') != -1) {
-            centerVertical = false;
+        if (~position.indexOf('bottom')) {
+            centerV = false;
             contentPosition.top = viewportSize.height - contentSize.height;
-        } else if (position.indexOf('top') != -1) {
-            centerVertical = false;
+        } else if (~position.indexOf('top')) {
+            centerV = false;
             contentPosition.top = 0;
         }
 
-        if (position.indexOf('right') != -1) {
-            centerHorizontal = false;
+        if (~position.indexOf('right')) {
+            centerH = false;
             contentPosition.left = viewportSize.width - contentSize.width;
-        } else if (position.indexOf('left') != -1) {
-            centerHorizontal = false;
+        } else if (~position.indexOf('left')) {
+            centerH = false;
             contentPosition.left = 0;
         }
     }
 
     function updateContentSize() {
-        if (options.width != false && options.height != false) {
+        if (options.width !== false && options.height !== false) {
             content.height(options.height);
             content.width(options.width);
-        } else if (contents != false) {
+        } else if (contents !== false) {
             content.height(contents.height());
             content.width(contents.width());
         }
 
-        contentSize = {
-            height: content.height(),
-            width: content.width()
-        };
+        contentSize.height = content.height();
+        contentSize.width = content.width();
     }
 
+    var floor = Math.floor;
+    
     function adjust() {
         viewportSize.height = element.height();
         viewportSize.width = element.width();
 
-        var diff;
+        var diff, newTop, newLeft;
 
         if (viewportSize.height > contentSize.height) {
             content.css('top', 0);
-            binder.height(contentSize.height);
-            binder.css('top', Math.floor(viewportSize.height / 2) -
-                              Math.floor(contentSize.height / 2))
+            binder.css('height', contentSize.height);
+            binder.css('top', floor(viewportSize.height / 2) -
+                              floor(contentSize.height / 2));
         } else {
             diff = contentSize.height - viewportSize.height;
-            binder.height(viewportSize.height + diff * 2);
+            binder.css('height', viewportSize.height + diff * 2);
             binder.css('top', -diff);
 
-            if (centerVertical) {
-                contentPosition.top = Math.floor(diff / 2);
+            if (centerV) {
+                contentPosition.top = floor(diff / 2);
                 content.css('top', contentPosition.top);
             } else {
-                var newTop = contentPosition.top + (diff - heightDiff);
-                newTop = newTop >= 0 ? newTop : 0;
+                newTop = contentPosition.top + (diff - diffH);
+                newTop >= 0 || (newTop = 0);
                 contentPosition.top = newTop;
                 content.css('top', newTop);
             }
-            heightDiff = diff;
+            diffH = diff;
         }
 
         if (viewportSize.width > contentSize.width) {
             content.css('left', 0);
-            binder.width(contentSize.width);
-            binder.css('left', Math.floor(viewportSize.width / 2) -
-                               Math.floor(contentSize.width / 2));
+            binder.css('width', contentSize.width);
+            binder.css('left', floor(viewportSize.width / 2) -
+                               floor(contentSize.width / 2));
         } else {
             diff = contentSize.width - viewportSize.width;
-            binder.width(viewportSize.width + diff * 2);
+            binder.css('width', viewportSize.width + diff * 2);
             binder.css('left', -diff);
 
-            if (centerHorizontal) {
-                contentPosition.left = Math.floor(diff / 2);
+            if (centerH) {
+                contentPosition.left = floor(diff / 2);
                 content.css('left', contentPosition.left);
             } else {
-                var newLeft = contentPosition.left + (diff - widthDiff);
-                newLeft = newLeft >= 0 ? newLeft : 0;
+                newLeft = contentPosition.left + (diff - diffW);
+                newLeft >= 0 || (newLeft = 0);
                 contentPosition.left = newLeft;
                 content.css('left', newLeft);
             }
-            widthDiff = diff;
+            diffW = diff;
         }
     }
 
     function setContentHeight(height) {
-        if (height != null) {
-            contentSize.height = height;
-            content.height(height);
-        }
+        contentSize.height = height;
+        content.height(height);
     }
 
     function setContentWidth(width) {
-        if (width != null) {
-            contentSize.width = width;
-            content.width(width);
-        }
-    }
-
-    function getContentSize() {
-        return contentSize;
+        contentSize.width = width;
+        content.width(width);
     }
 
     return {
-        adjust: adjust,
-        updateContentSize: updateContentSize,
-        setContentHeight: setContentHeight,
-        setContentWidth: setContentWidth,
-        getContentSize: getContentSize,
-        content: content,
-        binder: binder
+        adjust: adjust
+      , updateContentSize: updateContentSize
+      , setContentHeight: setContentHeight
+      , setContentWidth: setContentWidth
+      , contentSize: contentSize
+      , content: content
+      , binder: binder
     };
 }
 
