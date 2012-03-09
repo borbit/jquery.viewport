@@ -3,11 +3,11 @@
 Makes an element as a handy viewport for displaying content with
 absolute position.
 
-[http://borbit.github.com/jquery.viewport/](Demo, documentation and description).
+[Demo, documentation and description](http://borbit.github.com/jquery.viewport/).
 
-## Run Tests
+## Tests
 
-Tests are written in [http://docs.jquery.com/QUnit](QUnit). To run tests
+All Tests are written in [QUnit](http://docs.jquery.com/QUnit). To run tests
 just open the `tests/index.html` in a browser.
 
 ## License 
