@@ -1,8 +1,14 @@
 #jQuery.Viewport
 
 Makes an element as a handy viewport for displaying content with
-absolute position. For demo, documentation and description see:
-[http://borbit.github.com/jquery.viewport/](http://borbit.github.com/jquery.viewport/).
+absolute position.
+
+[http://borbit.github.com/jquery.viewport/](Demo, documentation and description).
+
+## Run Tests
+
+Tests are written in [http://docs.jquery.com/QUnit](QUnit). To run tests
+just open the `tests/index.html` in a browser.
 
 ## License 
 
