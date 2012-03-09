@@ -140,7 +140,7 @@ code {
     padding:30px;
     height:190px;
     border:1px dotted #000;
-    background:url(http://borbit.org/img/dragme.gif) no-repeat left top;
+    background:url('https://s3.amazonaws.com/serge.borb.it/dragme.png') no-repeat center;
 }
 
 #xRayIfBigger .contentFrame span {
@@ -165,7 +165,7 @@ code {
     clear:both;
     height:200px;
     border:1px dotted #000;
-    background:url(http://borbit.org/img/dragme.gif) no-repeat left top;
+    background:url('https://s3.amazonaws.com/serge.borb.it/dragme.png') no-repeat center;
 }
 
 #xRayIfSmaller .binderFrame {

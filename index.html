@@ -14,11 +14,13 @@
     <p>
         Very helpfull, simple and lightweight
         <a href="https://github.com/borbit/jquery.viewport">jQuery plugin</a>
-        that makes an element as a viewport for displaying elements with absolute
-        position in it. You can see it in action right there:
+        that makes an element as a handy viewport for displaying elements with absolute
+        position. You can see it in action right there:
     </p>
     
-    <div id="viewport"><img src="https://s3.amazonaws.com/serge.borb.it/dragme.png" width="800" height="600" /></div>
+    <div id="viewport">
+        <img src="https://s3.amazonaws.com/serge.borb.it/dragme.png" width="800" height="600" />
+    </div>
 
     <p>
         There are two additional plugins are used in this example: 
@@ -43,7 +45,9 @@
 <div class="code">
 <div class="hint">HTML</div>
 <pre>
-&lt;div id="element"&gt;&lt;img src="/img/dragme.gif" /&gt;&lt;/div&gt;
+&lt;div id="element"&gt;
+    &lt;img src="/path/to/img.jpg"/&gt;
+&lt;/div&gt;
 </pre>
 </div>
 
@@ -51,9 +55,8 @@
 <div class="hint">JS</div>
 <pre>
 $(function() {
-    $('#element').viewport();
-
-    var content = $('#element').viewport('content');
+    var element = $('#element').viewport();
+    var content = element.viewport('content');
 
     content.draggable({containment: 'parent'});
     content.scraggable({containment: 'parent'});
@@ -61,13 +64,13 @@ $(function() {
 </pre>
 </div>
 
-    <h2>Downloads (0.2.0)</h2>
+    <h2>Downloads (0.2.1)</h2>
     <p style="margin-bottom:10px;">
-        The compressed version is compressed by <a href="http://closure-compiler.appspot.com/">Google Closure Compiler</a>
+        The production version is minified by <a href="http://closure-compiler.appspot.com/">Google Closure Compiler</a>
         with simple optimization mode. To download a file just right-click and use "Save As...".
     </p>
-    <a  href="https://github.com/borbit/jquery.viewport/raw/0.2.0/jquery.viewport.min.js">Compressed Version <i>(2.4 kb)</i></a><br/>
-    <a href="https://github.com/borbit/jquery.viewport/raw/0.2.0/jquery.viewport.js">Uncompressed Version <i>(6 kb)</i></a>
+    <a href="https://github.com/borbit/jquery.viewport/raw/0.2.1/jquery.viewport.min.js">Production Version</a> (minified) - <i>2.5 kb</i><br/>
+    <a href="https://github.com/borbit/jquery.viewport/raw/0.2.1/jquery.viewport.js">Development Version</a> - <i>6.5 kb</i>
 
     <h2>Documentation</h2>
 
@@ -214,11 +217,17 @@ $(function() {
     </p>
 
     <h2>Changelog</h2>
-
+    
+    <h3 style="margin:15px 0 10px 0;">0.2.1</h3>
+    <p>
+        Bugfix to stop appending whitespaces or line breakes to the content frame as text nodes.
+    </p>
+    
     <h3 style="margin:15px 0 10px 0;">0.2.0</h3>
     <p>
         Added new option <code>position</code> to set the starting position of the
-        content frame in relation to the viewport frame.</p>
+        content frame in relation to the viewport frame.
+    </p>
     
     <h3 style="margin:15px 0 10px 0;">0.1.0</h3>
     <p>Initial release of jquery.viewport</p>
@@ -242,10 +251,7 @@ $(function() {
 
     <script type="text/javascript">
         $(function() {
-            var element = $('#viewport');
-
-            element.viewport();
-
+            var element = $('#viewport').viewport();
             var content = element.viewport('content');
 
             content.draggable({
