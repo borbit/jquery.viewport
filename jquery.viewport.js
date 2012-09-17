@@ -145,8 +145,8 @@ function createViewport(element, options) {
             content.height(options.height);
             content.width(options.width);
         } else if (contents !== false) {
-            content.height(contents.height());
-            content.width(contents.width());
+            content.height(contents.outerHeight());
+            content.width(contents.outerWidth());
         }
 
         contentSize.height = content.height();
