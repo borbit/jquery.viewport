@@ -123,18 +123,18 @@ function createViewport(element, options) {
     function updateContentPosition() {
         var position = options.position.split(' ');
 
-        if (~position.indexOf('bottom')) {
+        if (~$.inArray('bottom', position)) {
             centerV = false;
             contentPosition.top = viewportSize.height - contentSize.height;
-        } else if (~position.indexOf('top')) {
+        } else if (~$.inArray('top', position)) {
             centerV = false;
             contentPosition.top = 0;
         }
 
-        if (~position.indexOf('right')) {
+        if (~$.inArray('right', position)) {
             centerH = false;
             contentPosition.left = viewportSize.width - contentSize.width;
-        } else if (~position.indexOf('left')) {
+        } else if (~$.inArray('left', position)) {
             centerH = false;
             contentPosition.left = 0;
         }
