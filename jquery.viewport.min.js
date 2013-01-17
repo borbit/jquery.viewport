@@ -1,11 +1,11 @@
 /*    
-    jQuery.Viewport 0.2.1
+    jQuery.Viewport 0.2.2
     
     Makes an element as a handy viewport for displaying content
     with absolute position. For all details and documentation:
     http://borbit.github.com/jquery.viewport/
     
-    Copyright (c) 2011-2012 Serge Borbit <serge.borbit@gmail.com>
+    Copyright (c) 2011-2013 Serge Borbit <serge.borbit@gmail.com>
     
     Licensed under the MIT license
 */
