@@ -1,5 +1,5 @@
 /*    
-    jQuery.Viewport 0.2.2
+    jQuery.Viewport 0.2.3
     
     Makes an element as a handy viewport for displaying content
     with absolute position. For all details and documentation:
