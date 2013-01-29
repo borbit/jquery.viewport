@@ -3,23 +3,27 @@
   "title": "jQuery Viewport",
   "description": "Makes an element as a handy viewport for displaying content with absolute position.",
   "keywords": [
+    "ui",
     "viewport"
   ],
   "version": "0.2.3",
   "author": {
     "name": "Serge Borbit",
-    "email": "serge.borbit@gmail.com"
+    "email": "serge.borbit@gmail.com",
+    "url": "https://github.com/borbit"
   },
-  "licenses": [{
-    "type": "MIT",
-    "url": "http://en.wikipedia.org/wiki/MIT_License#License_terms"
-  }],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://en.wikipedia.org/wiki/MIT_License#License_terms"
+    }
+  ],
+  "dependencies": {
+    "jquery": ">=1.4.3"
+  },
   "bugs": "https://github.com/borbit/jquery.viewport/issues",
   "homepage": "https://github.com/borbit/jquery.viewport",
   "download": "https://github.com/borbit/jquery.viewport",
   "demo": "http://borbit.github.com/jquery.viewport/",
-  "docs": "http://borbit.github.com/jquery.viewport/",
-  "dependencies": {
-    "jquery": ">=1.5"
-  }
+  "docs": "http://borbit.github.com/jquery.viewport/"
 }
